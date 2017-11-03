@@ -196,8 +196,10 @@ io.on('connection', function(socket) { // Incoming connections from clients
                                 console.log(error);
                             } else {
                                 if (data.length > 0) {
-                                    socket.broadcast.emit('calling', { key: user.key, friend_key: data[0].key });
+                                    socket.broadcast.emit('calling', { key: user.key, friend_key: data[0].key, result: 1, type: "result"});
                                     console.log("Emit: " + user.key + " to " + data[0].key);
+                                } else {
+                                    socket.broadcast.emit('calling', { key: user.key, result: 0, type: "result"});
                                 }
                             }
                         });
