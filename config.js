@@ -1,9 +1,9 @@
 var Config = {
   "mysql_host":   '127.0.0.1',
   "mysql_user":   'root',
-  "mysql_pass":   'aKen2002',
+  "mysql_pass":   '',
   "mysql_data":   'chatapp_database',
-  "app_ip"	  :   '10.140.0.2',
+  "app_ip"	  :   '127.0.0.1' || '10.148.0.2',
   "app_port"  :   '8080',
   "secret"	  :   '@!@aKen2002@!@',
   "ios":"com.smartconnect.iudi",

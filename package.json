@@ -15,6 +15,7 @@
     "body-parser": "^1.17.2",
     "btoa": "^1.1.2",
     "cheerio": "^1.0.0-rc.2",
+    "crypto": "^1.0.1",
     "events": "^1.1.1",
     "express": "^4.15.3",
     "fcm-push": "^1.1.2",

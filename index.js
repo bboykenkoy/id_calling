@@ -259,11 +259,13 @@ io.on('connection', function(socket) { // Incoming connections from clients
         connections.splice(connections.indexOf(socket), 1);
         console.log("Disconnected: %s sockets connected", connections.length);
     });
+
     // Roi vao disconnect
     socket.on('signout', function(msg) {
-
+        if (isEmpty(msg)) {
+            return;
+        }
         console.log("user signout: " + JSON.stringify(msg));
-
         if (isEmpty(msg.key)) {
             console.log("User signout with key null");
         } else {
@@ -309,9 +311,9 @@ io.on('connection', function(socket) { // Incoming connections from clients
     });
 
     socket.on('chat message', function(msg) {
-        console.log("------------------------- MESSAGES -----------------------------------");
-        console.log(msg);
-        console.log("----------------------------------------------------------------------");
+        // console.log("------------------------- MESSAGES -----------------------------------");
+        //console.log(msg);
+        //console.log("----------------------------------------------------------------------");
         if (msg.subtype == 'close') {
             //remove channel 
             var deleteSQL = "DELETE FROM `channels` WHERE `idChannel`='" + msg.to + "'";
@@ -328,31 +330,30 @@ io.on('connection', function(socket) { // Incoming connections from clients
             var contentJson = JSON.stringify(msg.content);
             var objectValue = JSON.parse(contentJson);
             // console.log("value sdp --------------------- --------- " + objectValue['candidate'] + "\n\n data " + msg);
-            if (objectValue['candidate']) {
-                // console.log(JSON.stringify(msg));
-                //save current channel
-                var queryChannel = "SELECT * FROM `channels` WHERE `toKey` = '" + msg.to + "' AND `fromKey`='" + msg.from + "' AND `offer` != '" + contentJson + "'";
-                client.query(queryChannel, function(err, dataChannel, FNN) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        //channel is exist , response to client busy
-                        if (dataChannel.length == 0) {
-                            //create channel call here
-                            var queryInsertChannel = "INSERT INTO `channels` SET `idChannel`='" + msg.to + "', `fromKey`='" + msg.from + "', `toKey` = '" + msg.to + "', `senderAvatar`='" + msg.senderAvatar + "',`senderName`='" + msg.senderName + "', `receiverAvatar`='" + msg.receiverAvatar + "',`receiverName`='" + msg.receiverName + "',`candidate`='" + contentJson + "',`conversationId`='" + msg.conversationId + "',`type`='" + msg.type + "'";
-                            // console.log(queryInsertChannel);
-                            client.query(queryInsertChannel, function(err, data, FNN) {
-                                if (err) {
-                                    console.log("Insert New Channel call FAILED");
-                                } else {
-                                    console.log("Insert New Channel call success");
-                                }
-                            });
+            console.log(JSON.stringify(msg));
+            //save current channel
+            var queryChannel = "SELECT * FROM `channels` WHERE `toKey` = '" + msg.to + "' AND `fromKey`='" + msg.from + "' AND `candidate` != '" + contentJson + "'";
+            client.query(queryChannel, function(err, dataChannel, FNN) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    //channel is exist , response to client busy
+                    if (dataChannel.length == 0) {
+                        //create channel call here
+                        var queryInsertChannel = "INSERT INTO `channels` SET `idChannel`='" + msg.to + "', `fromKey`='" + msg.from + "', `toKey` = '" + msg.to + "', `senderAvatar`='" + msg.senderAvatar + "',`senderName`='" + msg.senderName + "', `receiverAvatar`='" + msg.receiverAvatar + "',`receiverName`='" + msg.receiverName + "',`candidate`='" + contentJson + "',`conversationId`='" + msg.conversationId + "',`type`='" + msg.type + "'";
+                        // console.log(queryInsertChannel);
+                        client.query(queryInsertChannel, function(err, data, FNN) {
+                            if (err) {
+                                console.log("Insert New Channel call FAILED");
+                            } else {
+                                console.log("Insert New Channel call success");
+                            }
+                        });
 
-                        }
                     }
-                });
-            }
+                }
+            });
+
         }
 
         var currentTime = new Date().getTime();
@@ -361,31 +362,28 @@ io.on('connection', function(socket) { // Incoming connections from clients
             var objectValue = JSON.parse(contentJson);
             // console.log("value sdp --------------------- --------- " + objectValue['sdp'] + "\n\n data " + contentJson);
 
-            if (objectValue['sdp']) {
-                // console.log(JSON.stringify(msg));
-                //save current channel
-                var queryChannel = "SELECT * FROM `channels` WHERE `toKey` = '" + msg.to + "' AND `fromKey`='" + msg.from + "' AND `offer` != '" + contentJson + "'";
-                client.query(queryChannel, function(err, dataChannel, FNN) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        //channel is exist , response to client busy
-                        if (dataChannel.length == 0) {
-                            //create channel call here
-                            var queryInsertChannel = "INSERT INTO `channels` SET `idChannel`='" + msg.to + "', `fromKey`='" + msg.from + "', `toKey` = '" + msg.to + "', `senderAvatar`='" + msg.senderAvatar + "',`senderName`='" + msg.senderName + "', `receiverAvatar`='" + msg.receiverAvatar + "',`receiverName`='" + msg.receiverName + "',`offer`='" + contentJson + "',`conversationId`='" + msg.conversationId + "',`type`='" + msg.type + "',`subType`='" + msg.subtype + "'";
-                            // console.log(queryInsertChannel);
-                            client.query(queryInsertChannel, function(err, data, FNN) {
-                                if (err) {
-                                    console.log("Insert New Channel call FAILED");
-                                } else {
-                                    console.log("Insert New Channel call success");
-                                }
-                            });
-                        }
+            console.log(JSON.stringify(msg));
+            //save current channel
+            var queryChannel = "SELECT * FROM `channels` WHERE `toKey` = '" + msg.to + "' AND `fromKey`='" + msg.from + "' AND `offer` != '" + contentJson + "'";
+            client.query(queryChannel, function(err, dataChannel, FNN) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    //channel is exist , response to client busy
+                    if (dataChannel.length == 0) {
+                        //create channel call here
+                        var queryInsertChannel = "INSERT INTO `channels` SET `idChannel`='" + msg.to + "', `fromKey`='" + msg.from + "', `toKey` = '" + msg.to + "', `senderAvatar`='" + msg.senderAvatar + "',`senderName`='" + msg.senderName + "', `receiverAvatar`='" + msg.receiverAvatar + "',`receiverName`='" + msg.receiverName + "',`offer`='" + contentJson + "',`conversationId`='" + msg.conversationId + "',`type`='" + msg.type + "',`subType`='" + msg.subtype + "'";
+                        // console.log(queryInsertChannel);
+                        client.query(queryInsertChannel, function(err, data, FNN) {
+                            if (err) {
+                                console.log("Insert New Channel call FAILED");
+                            } else {
+                                console.log("Insert New Channel call success");
+                            }
+                        });
                     }
-                });
-
-            }
+                }
+            });
 
             // sendNotification(msg.from, msg.to, "is calling", "calling", "Thành đẹp trai");
             var senderSQL = "SELECT `nickname` FROM `users` WHERE `key`='" + msg.from + "'";

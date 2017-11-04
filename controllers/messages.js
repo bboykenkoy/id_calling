@@ -79,6 +79,23 @@ client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
         console.log("SET CHARACTER SET utf8mb4");
     }
 });
+
+/*-------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+var Authenticate = require('../authenticate.js');
+var auth = new Authenticate();
+/*-------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+
+
 /*********--------------------------*********
  **********------- FUNCTION ------*********
  **********--------------------------*********/
@@ -106,7 +123,7 @@ var j = schedule.scheduleJob('00 00 00 */1 * *', function() {
                                                 console.log(eUser2);
                                             } else {
                                                 var tinnhanReport = {
-                                                    to: '<'+dUser[0].email+'>',
+                                                    to: '<' + dUser[0].email + '>',
                                                     subject: dUser[0].nickname + ', you have unread messages!',
                                                     html: '<!DOCTYPE html><html><meta http-equiv="X-UA-Compatible" content="IE=edge"><!--<![endif]--><title></title><!--[if !mso]><!-- --><link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css"><!--<![endif]--><style type="text/css" id="media-query">body {margin: 0;padding: 0;}table,tr,td {vertical-align: top;border-collapse: collapse;}.ie-browser table,.mso-container table {table-layout: fixed;}* {line-height: inherit;}a[x-apple-data-detectors=true] {color: inherit !important;text-decoration: none !important;}[owa] .img-container div,[owa] .img-container button {display: block !important;}[owa] .fullwidth button {width: 100% !important;}[owa] .block-grid .col {display: table-cell;float: none !important;vertical-align: top;}.ie-browser .num12,.ie-browser .block-grid,[owa] .num12,[owa] .block-grid {width: 575px !important;}.ExternalClass,.ExternalClass p,.ExternalClass span,.ExternalClass font,.ExternalClass td,.ExternalClass div {line-height: 100%;}.ie-browser .mixed-two-up .num4,[owa] .mixed-two-up .num4 {width: 188px !important;}.ie-browser .mixed-two-up .num8,[owa] .mixed-two-up .num8 {width: 376px !important;}.ie-browser .block-grid.two-up .col,[owa] .block-grid.two-up .col {width: 287px !important;}.ie-browser .block-grid.three-up .col,[owa] .block-grid.three-up .col {width: 191px !important;}.ie-browser .block-grid.four-up .col,[owa] .block-grid.four-up .col {width: 143px !important;}.ie-browser .block-grid.five-up .col,[owa] .block-grid.five-up .col {width: 115px !important;}.ie-browser .block-grid.six-up .col,[owa] .block-grid.six-up .col {width: 95px !important;}.ie-browser .block-grid.seven-up .col,[owa] .block-grid.seven-up .col {width: 82px !important;}.ie-browser .block-grid.eight-up .col,[owa] .block-grid.eight-up .col {width: 71px !important;}.ie-browser .block-grid.nine-up .col,[owa] .block-grid.nine-up .col {width: 63px !important;}.ie-browser .block-grid.ten-up .col,[owa] .block-grid.ten-up .col {width: 57px !important;}.ie-browser .block-grid.eleven-up .col,[owa] .block-grid.eleven-up .col {width: 52px !important;}.ie-browser .block-grid.twelve-up .col,[owa] .block-grid.twelve-up .col {width: 47px !important;}@media only screen and (min-width: 595px) {.block-grid {width: 575px !important;}.block-grid .col {display: table-cell;Float: none !important;vertical-align: top;}.block-grid .col.num12 {width: 575px !important;}.block-grid.mixed-two-up .col.num4 {width: 188px !important;}.block-grid.mixed-two-up .col.num8 {width: 376px !important;}.block-grid.two-up .col {width: 287px !important;}.block-grid.three-up .col {width: 191px !important;}.block-grid.four-up .col {width: 143px !important;}.block-grid.five-up .col {width: 115px !important;}.block-grid.six-up .col {width: 95px !important;}.block-grid.seven-up .col {width: 82px !important;}.block-grid.eight-up .col {width: 71px !important;}.block-grid.nine-up .col {width: 63px !important;}.block-grid.ten-up .col {width: 57px !important;}.block-grid.eleven-up .col {width: 52px !important;}.block-grid.twelve-up .col {width: 47px !important;}}@media (max-width: 595px) {.block-grid,.col {min-width: 320px !important;max-width: 100% !important;}.block-grid {width: calc(100% - 40px) !important;}.col {width: 100% !important;}.col>div {margin: 0 auto;}img.fullwidth {max-width: 100% !important;}}</style></head><body class="clean-body" style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: transparent"><!--[if IE]><div class="ie-browser"><![endif]--><!--[if mso]><div class="mso-container"><![endif]--><div class="nl-container" style="min-width: 320px;Margin: 0 auto;background-color: transparent"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color: transparent;"><![endif]--><div style="background-color:transparent;"><div style="Margin: 0 auto;min-width: 320px;max-width: 575px;width: 575px;width: calc(26500% - 157100px);overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;" class="block-grid "><div style="border-collapse: collapse;display: table;width: 100%;"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="background-color:transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width: 575px;"><tr class="layout-full-width" style="background-color:transparent;"><![endif]--><!--[if (mso)|(IE)]><td align="center" width="575" style=" width:575px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><![endif]--><div class="col num12" style="min-width: 320px;max-width: 575px;width: 575px;width: calc(25500% - 146050px);background-color: transparent;"><div style="background-color: transparent; width: 100% !important;"><!--[if (!mso)&(!IE)]><!--><div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"><!--<![endif]--><!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]--><div style="color:#555555;line-height:120%;font-family:" Montserrat ", "Trebuchet MS ", "Lucida Grande ", "Lucida Sans Unicode ", "Lucida Sans ", Tahoma, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#555555;font-family:" Montserrat ", "Trebuchet MS ", "Lucida Grande ", "Lucida Sans Unicode ", "Lucida Sans ", Tahoma, sans-serif;text-align:left;"><br></div></div><!--[if mso]></td></tr></table><![endif]--><!--[if (!mso)&(!IE)]><!--></div><!--<![endif]--></div></div><!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]--></div></div></div><div style="background-color:transparent;"><div style="Margin: 0 auto;min-width: 320px;max-width: 575px;width: 575px;width: calc(26500% - 157100px);overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #FFFFFF;" class="block-grid "><div style="border-collapse: collapse;display: table;width: 100%;"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="background-color:transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width: 575px;"><tr class="layout-full-width" style="background-color:#FFFFFF;"><![endif]--><!--[if (mso)|(IE)]><td align="center" width="575" style=" width:575px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:0px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><![endif]--><div class="col num12" style="min-width: 320px;max-width: 575px;width: 575px;width: calc(25500% - 146050px);background-color: #FFFFFF;"><div style="background-color: transparent; width: 100% !important;"><!--[if (!mso)&(!IE)]><!--><div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;"><!--<![endif]--><div align="center" class="img-container center fullwidth" style="padding-right: 0px;padding-left: 0px;"><!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px;" align="center"><![endif]--><img class="center fullwidth" align="center" border="0" src="http://smartconnectsoftware.com/mail_iudi/logo.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 575px" width="575"><!--[if mso]></td></tr></table><![endif]--></div><!--[if (!mso)&(!IE)]><!--></div><!--<![endif]--></div></div><!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]--></div></div></div><div style="background-color:transparent;"><div style="Margin: 0 auto;min-width: 320px;max-width: 575px;width: 575px;width: calc(26500% - 157100px);overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #FFFFFF;" class="block-grid "><div style="border-collapse: collapse;display: table;width: 100%;"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="background-color:transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width: 575px;"><tr class="layout-full-width" style="background-color:#FFFFFF;"><![endif]--><!--[if (mso)|(IE)]><td align="center" width="575" style=" width:575px; padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><![endif]--><div class="col num12" style="min-width: 320px;max-width: 575px;width: 575px;width: calc(25500% - 146050px);background-color: #FFFFFF;"><div style="background-color: transparent; width: 100% !important;"><!--[if (!mso)&(!IE)]><!--><div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:0px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"><!--<![endif]--><!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]--><div style="font-family:" Montserrat ", "Trebuchet MS ", "Lucida Grande ", "Lucida Sans Unicode ", "Lucida Sans ", Tahoma, sans-serif;line-height:120%;color:#0D0D0D; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:14px;color:#0D0D0D;font-family:" Montserrat ", "Trebuchet MS ", "Lucida Grande ", "Lucida Sans Unicode ", "Lucida Sans ", Tahoma, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 17px;text-align: center"><span style="font-size: 28px; line-height: 33px;"><strong><span style="line-height: 33px; font-size: 28px;">Dear Sir or Madam ,</span></strong></span></p></div></div><!--[if mso]></td></tr></table><![endif]--><div align="center" class="img-container center" style="padding-right: 0px;padding-left: 0px;"><!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 0px; padding-left: 0px;" align="center"><![endif]--><div style="line-height:10px;font-size:1px">&#160;</div> <img class="center" align="center" border="0" src="http://smartconnectsoftware.com/mail_iudi//divider.png" alt="Image" title="Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 316px" width="316"><div style="line-height:10px;font-size:1px">&#160;</div><!--[if mso]></td></tr></table><![endif]--></div><!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><![endif]--><div style="font-family:" Montserrat ", "Trebuchet MS ", "Lucida Grande ", "Lucida Sans Unicode ", "Lucida Sans ", Tahoma, sans-serif;line-height:150%;color:#555555; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"><div style="font-size:12px;line-height:18px;color:#555555;font-family:" Montserrat ", "Trebuchet MS ", "Lucida Grande ", "Lucida Sans Unicode ", "Lucida Sans ", Tahoma, sans-serif;text-align:left;"><p style="margin: 0;font-size: 14px;line-height: 21px;text-align: center">  <img src="' +
                                                         dUser2[0].avatar + '" width="80px" height="80px" style="border-radius: 50%; border: 4px solid rgba(218, 217, 217, 0.72);">  <h1 style="text-align: center;">' +
@@ -136,332 +153,341 @@ var j = schedule.scheduleJob('00 00 00 */1 * *', function() {
 console.log(j.nextInvocation());
 
 router.post('/new', urlParser, function(req, res) {
-    var token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
-    if (token) {
-        jwt.verify(token, config.secret, function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                var userSQL = "SELECT * FROM `messages` WHERE `key`='" + req.body.key + "'";
-                client.query(userSQL, function(error, data, fields) {
-                    if (error) {
-                        console.log(error);
-                        return res.sendStatus(300);
-                    } else {
-                        if (data.length > 0) {
-                            return res.send(echoResponse(404, 'This message already exists', 'success', true));
-                        } else {
-                            var dataMessage = req.body;
-                            var currentTime = new Date().getTime();
-                            var contentMessage = decodeURIComponent(req.body.content);
-                            // var insert = [];
-                            // for (var k in req.body) {
-                            //     if (k != 'access_token' && k != 'content') {
-                            //         insert.push("`" + k + "`='" + req.body[k] + "'");
-                            //     }
-                            // }
-                            delete req.body.access_token;
-                            req.body.time_server = currentTime;
-                            var insertSQL = escapeSQL.format("INSERT INTO `messages` SET ?", req.body);
-                            client.query(insertSQL, function(eInsert, dInsert, fInsert) {
-                                if (eInsert) {
-                                    console.log(eInsert);
-                                    return res.sendStatus(300);
-                                } else {
-                                    console.log("Vừa thêm message thành công với key " + req.body.key);
-                                    var membersSelect = "SELECT * FROM `members` WHERE `conversations_key`='" + req.body.conversations_key + "'";
-                                    client.query(membersSelect, function(e, d, f) {
-                                        if (e) {
-                                            console.log(e);
-                                            return res.sendStatus(300);
-                                        } else {
-                                            if (d.length > 0) {
-                                                var insertStatus = "INSERT INTO `message_status`(`is_read`,`conversations_key`,`messages_key`,`users_key`)"
-                                                for (var i = 0; i < d.length; i++) {
-                                                    if (d[i].users_key === req.body.sender_id) {
-                                                        var dataInsertStatus = "VALUES ('1', '" + req.body.conversations_key + "', '" + req.body.key + "', '" + req.body.sender_id + "')";
-                                                        client.query(insertStatus + dataInsertStatus);
-                                                    } else {
-                                                        var dataInsertStatus = "VALUES ('0', '" + req.body.conversations_key + "', '" + req.body.key + "', '" + d[i].users_key + "')";
-                                                        client.query(insertStatus + dataInsertStatus);
-                                                        // Emit message
-                                                        req.app.io.emit(d[i].users_key, req.body);
-                                                        // end emit
-                                                    }
-                                                }
-
-                                            }
-                                        }
-                                    });
-
-                                    var selectUserSend = "SELECT `nickname` FROM `users` WHERE `key`='" + req.body.sender_id + "'";
-                                    client.query(selectUserSend, function(eSend, dSend, fSend) {
-                                        if (eSend) {
-                                            console.log(eSend);
-                                            return res.sendStatus(300);
-                                        } else {
-                                            if (dSend.length > 0) {
-                                                var tokenDevice = "SELECT `key`,`nickname`,`device_token`,`device_type` FROM `users` WHERE `key` IN (SELECT `users_key` FROM `members` WHERE `conversations_key`='" + req.body.conversations_key + "') AND `key`!='" + req.body.sender_id + "'";
-                                                client.query(tokenDevice, function(eToken, dataToken, fieldToken) {
-                                                    if (eToken) {
-                                                        console.log(eToken);
-                                                        return res.sendStatus(300);
-                                                    } else {
-                                                        async.forEachOf(dataToken, function(dataLimit, iLimit, callLimit) {
-                                                            sendNotification(req.body.type, req.body.conversations_key, req.body.sender_id, dataToken[iLimit].key, contentMessage, "message", null);
-                                                        });
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    });
-
-
-                                    return res.send(echoResponse(200, 'Insert message successfully.', 'success', false));
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    } else {
-        return res.send(echoResponse(403, 'Authenticate: No token provided.', 'success', true));
+    var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
+    var key = req.body.key || req.query.key || req.params.key;
+    if (key.length == 0) {
+        return res.sendStatus(300);
     }
-});
-router.post('/update', urlParser, function(req, res) {
-    var token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
-    if (token) {
-        jwt.verify(token, config.secret, function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                var sqlMember = "SELECT * FROM `message_status` WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "'";
-                client.query(sqlMember, function(er, rs, fl) {
-                    if (er) {
-                        console.log(er);
+    auth.authenticateWithToken(key, access_token, function(logged) {
+        if (logged) {
+            var userSQL = "SELECT * FROM `messages` WHERE `key`='" + req.body.key + "'";
+            client.query(userSQL, function(error, data, fields) {
+                if (error) {
+                    console.log(error);
+                    return res.sendStatus(300);
+                } else {
+                    if (data.length > 0) {
+                        return res.send(echoResponse(404, 'This message already exists', 'success', true));
                     } else {
-                        if (rs.length > 0) {
-                            var sqlUpdateMember = "UPDATE `message_status` SET `is_read`='1' WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "'";
-                            client.query(sqlUpdateMember);
-                            console.log("Cập nhật thành công message_status");
-                            return res.send(echoResponse(200, 'Update message status successfully.', 'success', false));
-                        } else {
-                            return res.send(echoResponse(404, 'This user does not exists', 'success', true));
-                        }
-                    }
-                });
-            }
-        });
-    } else {
-        return res.send(echoResponse(403, 'Authenticate: No token provided.', 'success', true));
-    }
-});
-router.post('/status', urlParser, function(req, res) {
-    var token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
-    if (token) {
-        jwt.verify(token, config.secret, function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                var sqlMember = "SELECT * FROM `message_status` WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "'";
-                client.query(sqlMember, function(er, rs, fl) {
-                    if (er) {
-                        console.log(er);
-                    } else {
-                        if (rs.length > 0) {
-                            var sqlUpdateMember = "UPDATE `message_status` SET `status`='" + req.body.status + "' WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "' AND `status`!=2";
-                            client.query(sqlUpdateMember);
-                            console.log("Cập nhật thành công message_status");
-                            return res.send(echoResponse(200, 'Update message status successfully.', 'success', false));
-                        } else {
-                            return res.send(echoResponse(404, 'This user or conversation does not exists', 'success', true));
-                        }
-                    }
-                });
-            }
-        });
-    } else {
-        return res.send(echoResponse(403, 'Authenticate: No token provided.', 'success', true));
-    }
-});
-
-router.post('/delete', urlParser, function(req, res) {
-    var token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
-    if (token) {
-        jwt.verify(token, config.secret, function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                var sqlMember = "SELECT * FROM `messages` WHERE `key`='" + req.body.key + "'";
-                client.query(sqlMember, function(er, rs, fl) {
-                    if (er) {
-                        console.log(er);
-                    } else {
-                        if (rs.length > 0) {
-                            var currentTime = new Date().getTime();
-                            var oldTime = rs[0].time_server;
-                            var subtractTime = (parseInt(currentTime, 10) - parseInt(oldTime, 10)) / 60 / 1000;
-                            if (subtractTime <= 2) {
-                                var sqlDelete = "DELETE FROM `messages` WHERE `key`='" + req.body.key + "'";
-                                client.query(sqlDelete, function(eDelete, dDelete, fDelete) {
-                                    if (eDelete) {
-                                        console.log(eDelete);
-                                        res.send(echoResponse(300, 'error', JSON.stringify(eSelect), true));
+                        var dataMessage = req.body;
+                        var currentTime = new Date().getTime();
+                        var contentMessage = decodeURIComponent(req.body.content);
+                        delete req.body.access_token;
+                        req.body.time_server = currentTime;
+                        var insertSQL = escapeSQL.format("INSERT INTO `messages` SET ?", req.body);
+                        client.query(insertSQL, function(eInsert, dInsert, fInsert) {
+                            if (eInsert) {
+                                console.log(eInsert);
+                                return res.sendStatus(300);
+                            } else {
+                                console.log("Vừa thêm message thành công với key " + req.body.key);
+                                var membersSelect = "SELECT * FROM `members` WHERE `conversations_key`='" + req.body.conversations_key + "'";
+                                client.query(membersSelect, function(e, d, f) {
+                                    if (e) {
+                                        console.log(e);
+                                        return res.sendStatus(300);
                                     } else {
-                                        console.log("Vừa xóa messages với key = " + req.body.key);
-                                        var sqlDeleteMember = "SELECT * FROM `message_status` WHERE `messages_key`='" + req.body.key + "'";
-                                        client.query(sqlDeleteMember);
-                                        return res.send(echoResponse(200, 'Delete message successfully.', 'success', false));
+                                        if (d.length > 0) {
+                                            var insertStatus = "INSERT INTO `message_status`(`is_read`,`conversations_key`,`messages_key`,`users_key`)"
+                                            for (var i = 0; i < d.length; i++) {
+                                                if (d[i].users_key === req.body.sender_id) {
+                                                    var dataInsertStatus = "VALUES ('1', '" + req.body.conversations_key + "', '" + req.body.key + "', '" + req.body.sender_id + "')";
+                                                    client.query(insertStatus + dataInsertStatus);
+                                                } else {
+                                                    var dataInsertStatus = "VALUES ('0', '" + req.body.conversations_key + "', '" + req.body.key + "', '" + d[i].users_key + "')";
+                                                    client.query(insertStatus + dataInsertStatus);
+                                                    // Emit message
+                                                    req.app.io.emit(d[i].users_key, req.body);
+                                                    // end emit
+                                                }
+                                            }
+
+                                        }
                                     }
                                 });
-                            } else {
-                                return res.send(echoResponse(404, 'Delete unsuccessfully. Because exceeded 2 minutes.', 'success', false));
-                            }
-                        } else {
-                            return res.send(echoResponse(404, 'This messages does not exists', 'success', true));
-                        }
-                    }
-                });
-            }
-        });
-    } else {
-        return res.send(echoResponse(403, 'Authenticate: No token provided.', 'success', true));
-    }
-});
-/*********--------GET 1 MESSAGE ----------*********/
-router.get('/:key/type=content', urlParser, function(req, res) {
-    var token = req.body.access_token || req.query.access_token || req.headers['x-access-token'] || req.params.access_token;
-    if (token) {
-        jwt.verify(token, config.secret, function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                var key = req.body.key || req.query.key || req.params.key;
 
-                var sqlselect = "SELECT * FROM `messages` WHERE `key`='" + key + "'";
-                client.query(sqlselect, function(eSelect, rSelect, fSelect) {
-                    if (eSelect) {
-                        res.send(echoResponse(300, 'error', JSON.stringify(eSelect), true));
+                                var selectUserSend = "SELECT `nickname` FROM `users` WHERE `key`='" + req.body.sender_id + "'";
+                                client.query(selectUserSend, function(eSend, dSend, fSend) {
+                                    if (eSend) {
+                                        console.log(eSend);
+                                        return res.sendStatus(300);
+                                    } else {
+                                        if (dSend.length > 0) {
+                                            var tokenDevice = "SELECT `key`,`nickname`,`device_token`,`device_type` FROM `users` WHERE `key` IN (SELECT `users_key` FROM `members` WHERE `conversations_key`='" + req.body.conversations_key + "') AND `key`!='" + req.body.sender_id + "'";
+                                            client.query(tokenDevice, function(eToken, dataToken, fieldToken) {
+                                                if (eToken) {
+                                                    console.log(eToken);
+                                                    return res.sendStatus(300);
+                                                } else {
+                                                    async.forEachOf(dataToken, function(dataLimit, iLimit, callLimit) {
+                                                        sendNotification(req.body.type, req.body.conversations_key, req.body.sender_id, dataToken[iLimit].key, contentMessage, "message", null);
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                                return res.send(echoResponse(200, 'Insert message successfully.', 'success', false));
+                            }
+                        });
+                    }
+                }
+            });
+        } else {
+            return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+        }
+    });
+});
+
+
+
+
+router.post('/update', urlParser, function(req, res) {
+    var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
+    var key = req.body.users_key || req.query.users_key || req.params.users_key;
+    if (key.length == 0) {
+        return res.sendStatus(300);
+    }
+    auth.authenticateWithToken(key, access_token, function(logged) {
+        if (logged) {
+            var sqlMember = "SELECT * FROM `message_status` WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "'";
+            client.query(sqlMember, function(er, rs, fl) {
+                if (er) {
+                    console.log(er);
+                } else {
+                    if (rs.length > 0) {
+                        var sqlUpdateMember = "UPDATE `message_status` SET `is_read`='1' WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "'";
+                        client.query(sqlUpdateMember);
+                        console.log("Cập nhật thành công message_status");
+                        return res.send(echoResponse(200, 'Update message status successfully.', 'success', false));
                     } else {
-                        if (rSelect.length > 0) {
-                            client.query("SELECT `users_key`,`status` FROM `message_status` WHERE `messages_key`='" + key + "'", function(eQuery, dQuery, FQ) {
-                                if (eQuery) {
-                                    console.log(eQuery);
-                                    return res.sendStatus(300);
+                        return res.send(echoResponse(404, 'This user does not exists', 'success', true));
+                    }
+                }
+            });
+        } else {
+            return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+        }
+    });
+});
+
+
+router.post('/status', urlParser, function(req, res) {
+    var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
+    var key = req.body.users_key || req.query.users_key || req.params.users_key;
+    if (key.length == 0) {
+        return res.sendStatus(300);
+    }
+    auth.authenticateWithToken(key, access_token, function(logged) {
+        if (logged) {
+            var sqlMember = "SELECT * FROM `message_status` WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "'";
+            client.query(sqlMember, function(er, rs, fl) {
+                if (er) {
+                    console.log(er);
+                } else {
+                    if (rs.length > 0) {
+                        var sqlUpdateMember = "UPDATE `message_status` SET `status`='" + req.body.status + "' WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "' AND `status`!=2";
+                        client.query(sqlUpdateMember);
+                        console.log("Cập nhật thành công message_status");
+                        return res.send(echoResponse(200, 'Update message status successfully.', 'success', false));
+                    } else {
+                        return res.send(echoResponse(404, 'This user or conversation does not exists', 'success', true));
+                    }
+                }
+            });
+        } else {
+            return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+        }
+    });
+});
+
+
+
+router.post('/delete', urlParser, function(req, res) {
+    var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
+    var key = req.body.key || req.query.key || req.params.key;
+    var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
+    if (key.length == 0) {
+        return res.sendStatus(300);
+    }
+    auth.authenticateWithToken(key, access_token, function(logged) {
+        if (logged) {
+            var sqlMember = "SELECT * FROM `messages` WHERE `key`='" + req.body.key + "'";
+            client.query(sqlMember, function(er, rs, fl) {
+                if (er) {
+                    console.log(er);
+                } else {
+                    if (rs.length > 0) {
+                        var currentTime = new Date().getTime();
+                        var oldTime = rs[0].time_server;
+                        var subtractTime = (parseInt(currentTime, 10) - parseInt(oldTime, 10)) / 60 / 1000;
+                        if (subtractTime <= 2) {
+                            var sqlDelete = "DELETE FROM `messages` WHERE `key`='" + req.body.key + "'";
+                            client.query(sqlDelete, function(eDelete, dDelete, fDelete) {
+                                if (eDelete) {
+                                    console.log(eDelete);
+                                    res.send(echoResponse(300, 'error', JSON.stringify(eSelect), true));
                                 } else {
-                                    rSelect[0].message_status = dQuery;
-                                    return res.send(echoResponse(200, rSelect[0], 'success', false));
+                                    console.log("Vừa xóa messages với key = " + req.body.key);
+                                    var sqlDeleteMember = "SELECT * FROM `message_status` WHERE `messages_key`='" + req.body.key + "'";
+                                    client.query(sqlDeleteMember);
+                                    return res.send(echoResponse(200, 'Delete message successfully.', 'success', false));
                                 }
                             });
                         } else {
-                            res.send(echoResponse(404, '404 not found', 'success', false));
+                            return res.send(echoResponse(404, 'Delete unsuccessfully. Because exceeded 2 minutes.', 'success', false));
                         }
+                    } else {
+                        return res.send(echoResponse(404, 'This messages does not exists', 'success', true));
                     }
-                });
-            }
-        });
-    } else {
-        return res.send(echoResponse(403, 'Authenticate: No token provided.', 'success', true));
-    }
+                }
+            });
+        } else {
+            return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+        }
+    });
 });
+
+
+/*********--------GET 1 MESSAGE ----------*********/
+router.get('/:key/type=content', urlParser, function(req, res) {
+    var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
+    var key = req.body.key || req.query.key || req.params.key;
+    if (key.length == 0) {
+        return res.sendStatus(300);
+    }
+    auth.authenticateWithToken(key, access_token, function(logged) {
+        if (logged) {
+            var sqlselect = "SELECT * FROM `messages` WHERE `key`='" + key + "'";
+            client.query(sqlselect, function(eSelect, rSelect, fSelect) {
+                if (eSelect) {
+                    res.send(echoResponse(300, 'error', JSON.stringify(eSelect), true));
+                } else {
+                    if (rSelect.length > 0) {
+                        client.query("SELECT `users_key`,`status` FROM `message_status` WHERE `messages_key`='" + key + "'", function(eQuery, dQuery, FQ) {
+                            if (eQuery) {
+                                console.log(eQuery);
+                                return res.sendStatus(300);
+                            } else {
+                                rSelect[0].message_status = dQuery;
+                                return res.send(echoResponse(200, rSelect[0], 'success', false));
+                            }
+                        });
+                    } else {
+                        res.send(echoResponse(404, '404 not found', 'success', false));
+                    }
+                }
+            });
+        } else {
+            return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+        }
+    });
+});
+
+
 /*********--------GET MESSAGE UNREAD----------*********/
 router.get('/unread', urlParser, function(req, res) {
-    var token = req.body.access_token || req.query.access_token || req.headers['x-access-token'] || req.params.access_token;
-    if (token) {
-        jwt.verify(token, config.secret, function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                var type = req.body.type || req.query.type || req.params.type || req.headers['type'];
-                var conversations_key = req.body.conversations_key || req.query.conversations_key || req.params.conversations_key || req.headers['conversations_key'];
-                var users_key = req.body.users_key || req.query.users_key || req.params.users_key || req.headers['users_key'];
-
-                var sqlselect = "SELECT * FROM `messages` WHERE `conversations_key`='" + conversations_key + "' AND `key` IN (SELECT `messages_key` FROM `message_status` WHERE `users_key`='" + users_key + "' AND `conversations_key`='" + conversations_key + "' AND `status`=0)";
-                client.query(sqlselect, function(eSelect, rSelect, fSelect) {
-                    if (eSelect) {
-                        res.send(echoResponse(300, 'error', JSON.stringify(eSelect), true));
-                    } else {
-                        if (rSelect.length > 0) {
-                            if (type === 'data') {
-                                res.send(echoResponse(200, rSelect, 'success', false));
-                            } else {
-                                res.send(echoResponse(200, rSelect.length, 'success', false));
-                            }
-                        } else {
-                            res.send(echoResponse(404, '404 not found', 'success', false));
-                        }
-                    }
-                });
-            }
-        });
-    } else {
-        return res.send(echoResponse(403, 'Authenticate: No token provided.', 'success', true));
+    var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
+    var key = req.body.users_key || req.query.users_key || req.params.users_key;
+    if (key.length == 0) {
+        return res.sendStatus(300);
     }
+    auth.authenticateWithToken(key, access_token, function(logged) {
+        if (logged) {
+            var type = req.body.type || req.query.type || req.params.type || req.headers['type'];
+            var conversations_key = req.body.conversations_key || req.query.conversations_key || req.params.conversations_key || req.headers['conversations_key'];
+            var users_key = req.body.users_key || req.query.users_key || req.params.users_key || req.headers['users_key'];
+
+            var sqlselect = "SELECT * FROM `messages` WHERE `conversations_key`='" + conversations_key + "' AND `key` IN (SELECT `messages_key` FROM `message_status` WHERE `users_key`='" + users_key + "' AND `conversations_key`='" + conversations_key + "' AND `status`=0)";
+            client.query(sqlselect, function(eSelect, rSelect, fSelect) {
+                if (eSelect) {
+                    res.send(echoResponse(300, 'error', JSON.stringify(eSelect), true));
+                } else {
+                    if (rSelect.length > 0) {
+                        if (type === 'data') {
+                            res.send(echoResponse(200, rSelect, 'success', false));
+                        } else {
+                            res.send(echoResponse(200, rSelect.length, 'success', false));
+                        }
+                    } else {
+                        res.send(echoResponse(404, '404 not found', 'success', false));
+                    }
+                }
+            });
+        } else {
+            return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+        }
+    });
 });
+
+
 
 
 router.get('/readed', urlParser, function(req, res) {
-    var token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
-    if (token) {
-        jwt.verify(token, config.secret, function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                var messages_key = req.body.messages_key || req.query.messages_key || req.params.messages_key || req.headers['messages_key'];
-                var users_key = req.body.users_key || req.query.users_key || req.params.users_key || req.headers['users_key'];
-
-                var sqlselect = "SELECT `nickname` FROM `users` WHERE `key`!='" + users_key + "' AND `key` IN (SELECT `users_key` FROM `message_status` WHERE `messages_key`='" + messages_key + "' AND `status`=2)";
-                client.query(sqlselect, function(eSelect, rSelect, fSelect) {
-                    if (eSelect) {
-                        res.send(echoResponse(300, 'error', JSON.stringify(eSelect), true));
-                    } else {
-                        if (rSelect.length > 0) {
-                            var data = [];
-                            for (var i = 0; i < rSelect.length; i++) {
-                                data.push(rSelect[i].nickname);
-                            }
-                            res.send(echoResponse(200, data.toString(), 'success', false));
-                        } else {
-                            res.send(echoResponse(404, '404 not found', 'success', false));
-                        }
-                    }
-                });
-            }
-        });
-    } else {
-        return res.send(echoResponse(403, 'Authenticate: No token provided.', 'success', true));
+    var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
+    var key = req.body.users_key || req.query.users_key || req.params.users_key;
+    var users_key = req.body.users_key || req.query.users_key || req.params.users_key;
+    if (key.length == 0) {
+        return res.sendStatus(300);
     }
+    auth.authenticateWithToken(key, access_token, function(logged) {
+        if (logged) {
+            var messages_key = req.body.messages_key || req.query.messages_key || req.params.messages_key || req.headers['messages_key'];
+            var sqlselect = "SELECT `nickname` FROM `users` WHERE `key`!='" + users_key + "' AND `key` IN (SELECT `users_key` FROM `message_status` WHERE `messages_key`='" + messages_key + "' AND `status`=2)";
+            client.query(sqlselect, function(eSelect, rSelect, fSelect) {
+                if (eSelect) {
+                    res.send(echoResponse(300, 'error', JSON.stringify(eSelect), true));
+                } else {
+                    if (rSelect.length > 0) {
+                        var data = [];
+                        for (var i = 0; i < rSelect.length; i++) {
+                            data.push(rSelect[i].nickname);
+                        }
+                        res.send(echoResponse(200, data.toString(), 'success', false));
+                    } else {
+                        res.send(echoResponse(404, '404 not found', 'success', false));
+                    }
+                }
+            });
+        } else {
+            return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+        }
+    });
 });
 
-router.get('/conversations=:conversations_key', urlParser, function(req, res) {
-    var token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
-    if (token) {
-        jwt.verify(token, config.secret, function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                var conversations_key = req.body.conversations_key || req.query.conversations_key || req.params.conversations_key || req.headers['conversations_key'];
-                var page = req.body.page || req.query.page || req.params.page;
-                var per_page = req.body.per_page || req.query.per_page || req.params.per_page;
 
-                var sqlu = "SELECT * FROM `messages` WHERE `conversations_key`='" + conversations_key + "' ORDER BY `time` DESC LIMIT " + parseInt(per_page, 10) + " OFFSET " + parseInt(page, 10) * parseInt(per_page, 10) + "";
-                client.query(sqlu, function(eSelect, rSelect, fSelect) {
-                    if (eSelect) {
-                        res.send(echoResponse(300, 'error', JSON.stringify(eSelect), true));
-                    } else {
-                        if (rSelect.length > 0) {
-                            res.send(echoResponse(200, rSelect, 'success', false));
-                        } else {
-                            res.send(echoResponse(404, '404 not found', 'success', false));
-                        }
-                    }
-                });
+
+
+router.get('/conversations=:conversations_key', urlParser, function(req, res) {
+    // var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
+    // var key = req.body.key || req.query.key || req.params.key;
+    // if (key.length == 0) {
+    //     return res.sendStatus(300);
+    // }
+    // auth.authenticateWithToken(key, access_token, function(logged) {
+    //     if (logged) {
+
+    //     } else {
+    //         return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+    //     }
+    // });
+
+    var conversations_key = req.body.conversations_key || req.query.conversations_key || req.params.conversations_key || req.headers['conversations_key'];
+    var page = req.body.page || req.query.page || req.params.page;
+    var per_page = req.body.per_page || req.query.per_page || req.params.per_page;
+
+    var sqlu = "SELECT * FROM `messages` WHERE `conversations_key`='" + conversations_key + "' ORDER BY `time` DESC LIMIT " + parseInt(per_page, 10) + " OFFSET " + parseInt(page, 10) * parseInt(per_page, 10) + "";
+    client.query(sqlu, function(eSelect, rSelect, fSelect) {
+        if (eSelect) {
+            res.send(echoResponse(300, 'error', JSON.stringify(eSelect), true));
+        } else {
+            if (rSelect.length > 0) {
+                res.send(echoResponse(200, rSelect, 'success', false));
+            } else {
+                res.send(echoResponse(404, '404 not found', 'success', false));
             }
-        });
-    } else {
-        return res.send(echoResponse(403, 'Authenticate: No token provided.', 'success', true));
-    }
+        }
+    });
 });
 
 function sendNotification(type, conversation_key, sender_key, receiver_key, noidung, kieu, posts_id) {
@@ -777,6 +803,7 @@ function numberBadge(key, count) {
         }
     });
 }
+
 
 function isJsonString(str) {
     try {
