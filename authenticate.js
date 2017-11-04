@@ -69,15 +69,37 @@ module.exports = class Authenticate {
         var users_key = key;
         var object = { key: key, create_time: create_time, expire_time: expire_time };
         var access_token = encrypt(JSON.stringify(object));
-        var sql = "INSERT INTO `tokens` SET `create_time`=" + create_time + ", `expire_time`=" + expire_time + ", `access_token`='" + access_token + "', `users_key`='" + users_key + "'";
-        console.log(sql);
-        client.query(sql, function(error, data, fields) {
-            if (error) {
-                console.log(error);
+        var sqlCheck = "SELECT * FROM `tokens` WHERE `users_key`='" + users_key + "'";
+        client.query(sqlCheck, function(e, d, f) {
+            if (e) {
+                console.log(e);
                 callback(null);
             } else {
-                console.log("Created successfuly access_token for key: " + key);
-                callback(access_token);
+                if (d.length > 0) {
+                    var sql = "UPDATE `tokens` SET `create_time`=" + create_time + ", `expire_time`=" + expire_time + ", `access_token`='" + access_token + "' WHERE `users_key`='" + users_key + "'";
+                    console.log(sql);
+                    client.query(sql, function(error, data, fields) {
+                        if (error) {
+                            console.log(error);
+                            callback(null);
+                        } else {
+                            console.log("Update successfuly access_token for key: " + key);
+                            callback(access_token);
+                        }
+                    });
+                } else {
+                    var sql = "INSERT INTO `tokens` SET `create_time`=" + create_time + ", `expire_time`=" + expire_time + ", `access_token`='" + access_token + "', `users_key`='" + users_key + "'";
+                    console.log(sql);
+                    client.query(sql, function(error, data, fields) {
+                        if (error) {
+                            console.log(error);
+                            callback(null);
+                        } else {
+                            console.log("Created successfuly access_token for key: " + key);
+                            callback(access_token);
+                        }
+                    });
+                }
             }
         });
     }
