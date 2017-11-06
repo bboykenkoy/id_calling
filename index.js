@@ -201,18 +201,19 @@ io.on('connection', function(socket) { // Incoming connections from clients
                                 if (data.length > 0) {
                                     socket.broadcast.emit('calling', { key: user.key, friend_key: data[0].key, result: 1, type: "result"});
                                     console.log("Emit: " + user.key + " to " + data[0].key);
-                                    socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
+                                    socket.broadcast.emit('K_Signal_Call', [{message:"user not found",result: 0, type: "result"}]);
                                 } else {
-                                    socket.broadcast.emit('calling', { message:"user not found", result: 0, type: "result"});
-                                    socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
+                                    socket.broadcast.emit('calling',[{ message:"user not found", result: 0, type: "result"}]);
+                                    socket.broadcast.emit('K_Signal_Call', p{message:"user not found",result: 0, type: "result"}]);
                                     console.log("user not found");
                                 }
                             }
                         });
                     }else{
                         console.log("user not found");
-                        socket.broadcast.emit('calling', {message:"user not found",result: 0, type: "result"});
-                        socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
+                        socket.broadcast.emit("K_Signal_Call", msg);
+                        socket.broadcast.emit('calling', [{message:"user not found",result: 0, type: "result"}]);
+                        socket.broadcast.emit('K_Signal_Call', [{message:"user not found",result: 0, type: "result"}]);
                         
                     }
                 }
