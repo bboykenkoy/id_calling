@@ -39,44 +39,7 @@ var avatarApp = "http://i.imgur.com/rt1NU2t.png";
 /*********--------------------------*********
  **********------- MYSQL CONNECT ----*********
  **********--------------------------*********/
-var client;
 
-function startConnection() {
-    console.error('CONNECTING');
-    client = mysql.createConnection({
-        host: config.mysql_host,
-        user: config.mysql_user,
-        password: config.mysql_pass,
-        database: config.mysql_data
-    });
-    client.connect(function(err) {
-        if (err) {
-            console.error('CONNECT FAILED MESSAGE', err.code);
-            startConnection();
-        } else {
-            console.error('CONNECTED MESSAGE');
-        }
-    });
-    client.on('error', function(err) {
-        if (err.fatal)
-            startConnection();
-    });
-}
-startConnection();
-client.query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
-    }
-});
-client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET CHARACTER SET utf8mb4");
-    }
-});
 
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -84,8 +47,9 @@ client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
-var Authenticate = require('../authenticate.js');
-var auth = new Authenticate();
+var Base = require('../base.js');
+var BASE = new Base();
+var client = BASE.client();
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -103,7 +67,7 @@ router.get('/type=all', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var country_code = req.body.country_code || req.query.country_code || req.params.country_code;
             var page = req.body.page || req.query.page || req.params.page;
@@ -180,7 +144,7 @@ router.post('/type=params', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var page = req.body.page || req.query.page || req.params.page;
             var per_page = req.body.per_page || req.query.per_page || req.params.per_page;
@@ -390,7 +354,7 @@ router.get('/type=like', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectUser = "SELECT * FROM `couple_like` WHERE `users_key`='" + key + "' ORDER BY `time` DESC";
             client.query(selectUser, function(eSelect, dSelect, fSelect) {
@@ -439,7 +403,7 @@ router.get('/type=check', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var sql = "SELECT * FROM `couple_like` WHERE `users_key`='" + key + "' AND `friend_key`='" + friend_key + "'";
@@ -482,7 +446,7 @@ router.post('/type=deletelike', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var sqlDelte = "DELETE FROM `couple_like` WHERE `users_key`='" + key + "' AND `friend_key`='" + friend_key + "'";
@@ -509,7 +473,7 @@ router.post('/type=deleteunlike', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var sqlDelte = "DELETE FROM `couple_unlike` WHERE `users_key`='" + key + "' AND `friend_key`='" + friend_key + "'";
@@ -536,7 +500,7 @@ router.get('/type=unlike', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectUser = "SELECT * FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `couple_unlike` WHERE `users_key`='" + key + "')";
             client.query(selectUser, function(eSelect, dSelect, fSelect) {
@@ -566,7 +530,7 @@ router.get('/type=me', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var page = req.body.page || req.query.page || req.params.page;
             var per_page = req.body.per_page || req.query.per_page || req.params.per_page;
@@ -617,7 +581,7 @@ router.post('/like', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var sqlu = "SELECT * FROM `couple_like` WHERE `users_key`='" + req.body.users_key + "' AND `friend_key`='" + req.body.friend_key + "'";
             client.query(sqlu, function(errr, rsss, fiii) {
@@ -675,7 +639,7 @@ router.post('/unlike', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var sqlu = "SELECT * FROM `couple_unlike` WHERE `users_key`='" + req.body.users_key + "' AND `friend_key`='" + req.body.friend_key + "'";
             client.query(sqlu, function(errr, rsss, fiii) {

@@ -40,45 +40,6 @@ var avatarApp = "http://i.imgur.com/rt1NU2t.png";
 /*********--------------------------*********
  **********------- MYSQL CONNECT ----*********
  **********--------------------------*********/
-var client;
-
-function startConnection() {
-    console.error('CONNECTING');
-    client = mysql.createConnection({
-        host: config.mysql_host,
-        user: config.mysql_user,
-        password: config.mysql_pass,
-        database: config.mysql_data
-    });
-    client.connect(function(err) {
-        if (err) {
-            console.error('CONNECT FAILED MESSAGE', err.code);
-            startConnection();
-        } else {
-            console.error('CONNECTED MESSAGE');
-        }
-    });
-    client.on('error', function(err) {
-        if (err.fatal)
-            startConnection();
-    });
-}
-startConnection();
-client.query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
-    }
-});
-client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET CHARACTER SET utf8mb4");
-    }
-});
-
 var fs = require('fs');
 var request = require('request');
 var path = require('path');
@@ -90,8 +51,9 @@ var path = require('path');
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
-var Authenticate = require('../authenticate.js');
-var auth = new Authenticate();
+var Base = require('../base.js');
+var BASE = new Base();
+var client = BASE.client();
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -107,7 +69,7 @@ router.post('/new', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var value = [];
             var insert = [];
@@ -164,7 +126,7 @@ router.post('/update', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var insert = [];
             for (var k in req.body) {
@@ -309,7 +271,7 @@ router.post('/delete_image', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectLike = "SELECT * FROM `posts` WHERE `users_key`='" + req.body.key + "' AND `id`='" + req.body.posts_id + "'";
             client.query(selectLike, function(eLike, dLike, fLike) {
@@ -347,7 +309,7 @@ router.post('/delete', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectLike = "SELECT * FROM `posts` WHERE `users_key`='" + req.body.users_key + "' AND `id`='" + req.body.id + "'";
             client.query(selectLike, function(eLike, dLike, fLike) {
@@ -387,7 +349,7 @@ router.post('/report', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectLike = "SELECT * FROM `reports_posts` WHERE `users_key`='" + req.body.users_key + "' AND `posts_id`='" + req.body.posts_id + "'";
             client.query(selectLike, function(eLike, dLike, fLike) {
@@ -469,7 +431,7 @@ router.post('/seen', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectLike = "SELECT * FROM `notification_feed` WHERE `users_key`='" + req.body.users_key + "' AND `id`='" + req.body.id + "'";
             client.query(selectLike, function(eLike, dLike, fLike) {
@@ -507,7 +469,7 @@ router.get('/:id/type=info', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             isHavePermission(key, req.params.id, function(isPermission) {
                 if (isPermission == true) {
@@ -791,7 +753,7 @@ router.post('/like', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             checkHavePost(res, req.body.posts_id, function(runOut) {
                 if (runOut == true) {
@@ -927,7 +889,7 @@ router.post('/comment/new', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             checkHavePost(res, req.body.posts_id, function(runOut) {
                 if (runOut == true) {
@@ -1010,7 +972,7 @@ router.post('/comment/update', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var insert = [];
             for (var k in req.body) {
@@ -1043,7 +1005,7 @@ router.post('/comment/delete', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectLike = "SELECT * FROM `comments` WHERE `users_key`='" + req.body.users_key + "' AND `id`='" + req.body.id + "' AND `posts_id`='" + req.body.posts_id + "'";
             client.query(selectLike, function(eLike, dLike, fLike) {
@@ -1105,7 +1067,7 @@ router.post('/public', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var posts_id = req.body.id;
             var dataSQL = "UPDATE `posts` SET `is_active`=1 WHERE `id`='" + posts_id + "' AND `users_key`='" + req.body.users_key + "'";

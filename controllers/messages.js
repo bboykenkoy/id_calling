@@ -41,44 +41,7 @@ var async = require('async');
 /*********--------------------------*********
  **********------- MYSQL CONNECT ----*********
  **********--------------------------*********/
-var client;
 
-function startConnection() {
-    console.error('CONNECTING');
-    client = mysql.createConnection({
-        host: config.mysql_host,
-        user: config.mysql_user,
-        password: config.mysql_pass,
-        database: config.mysql_data
-    });
-    client.connect(function(err) {
-        if (err) {
-            console.error('CONNECT FAILED MESSAGE', err.code);
-            startConnection();
-        } else {
-            console.error('CONNECTED MESSAGE');
-        }
-    });
-    client.on('error', function(err) {
-        if (err.fatal)
-            startConnection();
-    });
-}
-startConnection();
-client.query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
-    }
-});
-client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET CHARACTER SET utf8mb4");
-    }
-});
 
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -86,8 +49,9 @@ client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
-var Authenticate = require('../authenticate.js');
-var auth = new Authenticate();
+var Base = require('../base.js');
+var BASE = new Base();
+var client = BASE.client();
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -158,7 +122,7 @@ router.post('/new', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var userSQL = "SELECT * FROM `messages` WHERE `key`='" + req.body.key + "'";
             client.query(userSQL, function(error, data, fields) {
@@ -248,7 +212,7 @@ router.post('/update', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var sqlMember = "SELECT * FROM `message_status` WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "'";
             client.query(sqlMember, function(er, rs, fl) {
@@ -278,7 +242,7 @@ router.post('/status', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var sqlMember = "SELECT * FROM `message_status` WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "'";
             client.query(sqlMember, function(er, rs, fl) {
@@ -310,7 +274,7 @@ router.post('/delete', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var sqlMember = "SELECT * FROM `messages` WHERE `key`='" + req.body.key + "'";
             client.query(sqlMember, function(er, rs, fl) {
@@ -356,7 +320,7 @@ router.get('/:key/type=content', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var sqlselect = "SELECT * FROM `messages` WHERE `key`='" + key + "'";
             client.query(sqlselect, function(eSelect, rSelect, fSelect) {
@@ -392,7 +356,7 @@ router.get('/unread', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var type = req.body.type || req.query.type || req.params.type || req.headers['type'];
             var conversations_key = req.body.conversations_key || req.query.conversations_key || req.params.conversations_key || req.headers['conversations_key'];
@@ -430,7 +394,7 @@ router.get('/readed', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var messages_key = req.body.messages_key || req.query.messages_key || req.params.messages_key || req.headers['messages_key'];
             var sqlselect = "SELECT `nickname` FROM `users` WHERE `key`!='" + users_key + "' AND `key` IN (SELECT `users_key` FROM `message_status` WHERE `messages_key`='" + messages_key + "' AND `status`=2)";
@@ -464,7 +428,7 @@ router.get('/conversations=:conversations_key', urlParser, function(req, res) {
     // if (key.length == 0) {
     //     return res.sendStatus(300);
     // }
-    // auth.authenticateWithToken(key, access_token, function(logged) {
+    // BASE.authenticateWithToken(key, access_token, function(logged) {
     //     if (logged) {
 
     //     } else {

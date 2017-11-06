@@ -39,44 +39,6 @@ var avatarApp = "http://i.imgur.com/rt1NU2t.png";
 /*********--------------------------*********
  **********------- MYSQL CONNECT ----*********
  **********--------------------------*********/
-var client;
-
-function startConnection() {
-    console.error('CONNECTING');
-    client = mysql.createConnection({
-        host: config.mysql_host,
-        user: config.mysql_user,
-        password: config.mysql_pass,
-        database: config.mysql_data
-    });
-    client.connect(function(err) {
-        if (err) {
-            console.error('CONNECT FAILED QUESTIONS', err.code);
-            startConnection();
-        } else {
-            console.error('CONNECTED QUESTIONS');
-        }
-    });
-    client.on('error', function(err) {
-        if (err.fatal)
-            startConnection();
-    });
-}
-startConnection();
-client.query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
-    }
-});
-client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET CHARACTER SET utf8mb4");
-    }
-});
 
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -84,8 +46,9 @@ client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
-var Authenticate = require('../authenticate.js');
-var auth = new Authenticate();
+var Base = require('../base.js');
+var BASE = new Base();
+var client = BASE.client();
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -119,7 +82,7 @@ router.get('/type=received', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var page = req.params.page || req.query.page;
             var per_page = req.params.per_page || req.query.per_page;
@@ -151,7 +114,7 @@ router.get('/type=sent', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var page = req.params.page || req.query.page;
             var per_page = req.params.per_page || req.query.per_page;
@@ -197,7 +160,7 @@ router.get('/type=answers', urlParser, function(req, res) {
     // if (key.length == 0) {
     //     return res.sendStatus(300);
     // }
-    // auth.authenticateWithToken(key, access_token, function(logged) {
+    // BASE.authenticateWithToken(key, access_token, function(logged) {
     //     if (logged) {
     var questions_id = req.params.questions_id || req.query.questions_id;
     var page = req.params.page || req.query.page;
@@ -269,7 +232,7 @@ router.post('/questions/delete', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var id = req.body.id;
             if (!req.body.id || !req.body.key) {
@@ -337,7 +300,7 @@ router.post('/answers/new', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var time = new Date().getTime();
             var content = escapeSQL.escape(decodeURIComponent(req.body.content));
