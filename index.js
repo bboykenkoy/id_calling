@@ -113,8 +113,8 @@ client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
 io.on('connection', function(socket) { // Incoming connections from clients
     var peer;
     socket.on('online', function(user) {
-        socket.broadcast.emit('calling',{"K_Signal_Call":"No"});
-        socket.broadcast.emit('calling',{K_Signal_Call:"No"});
+        socket.emit('calling',{"K_Signal_Call":"No"});
+        socket.emit('calling',{K_Signal_Call:"No"});
         if (findUserByUID(user.key) == null) {
             var usr = { id: user.key, key: user.key, socketid: socket.id };
             users.push(usr);
