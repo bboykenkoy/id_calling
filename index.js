@@ -171,8 +171,8 @@ io.on('connection', function(socket) { // Incoming connections from clients
 
          console.log("request from calling " + user.key);
 
-         socket.broadcast.emit('calling',{"K_Signal_Call":"No"});
-         
+         socket.broadcast.emit('calling',{K_Signal_Call:"No"});
+
 
         // if (user && user.type == 'connect') {
         //     var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
