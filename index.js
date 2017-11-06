@@ -203,10 +203,12 @@ io.on('connection', function(socket) { // Incoming connections from clients
                                     console.log("Emit: " + user.key + " to " + data[0].key);
                                 } else {
                                     socket.broadcast.emit('calling', { message:"user not found", result: 0, type: "result"});
+                                    console.log("user not found");
                                 }
                             }
                         });
                     }else{
+                        console.log("user not found");
                         socket.broadcast.emit('calling', {message:"user not found",result: 0, type: "result"});
                     }
                 }
