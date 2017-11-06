@@ -168,6 +168,9 @@ io.on('connection', function(socket) { // Incoming connections from clients
         }
     });
     socket.on('calling', function(user) {
+
+         console.log("request from calling " + user.key);
+
         if (user && user.type == 'connect') {
             var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
             client.query(sqlCheckExit, function(e, d, f) {
