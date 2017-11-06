@@ -199,28 +199,34 @@ io.on('connection', function(socket) { // Incoming connections from clients
                                 console.log(error);
                             } else {
                                 if (data.length > 0) {
-                                    socket.broadcast.emit('calling', { key: user.key, friend_key: data[0].key, result: 1, type: "result"});
-                                    console.log("Emit: " + user.key + " to " + data[0].key);
+                                      let msg =  { key: user.key, friend_key: data[0].key, result: 1, type: "result"};
+                                    socket.broadcast.emit('calling', msg);
+                                    console.log(msg);
                                     // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
                                 } else {
-                                    socket.broadcast.emit('calling', { message:"user not found", result: 0, type: "result"});
+
+                                    let msg =  { message:"user not found", result: 0, type: "result"};
+                                    socket.broadcast.emit('calling', msg);
                                     // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
-                                    console.log("user not found");
+                                    console.log(msg);
                                 }
                             }
                         });
                     }else{
-                        console.log("user not found");
-                        socket.broadcast.emit('calling', {message:"user not found",result: 0, type: "result"});
+                        
+                        let msg = {message:"user not found",result: 0, type: "result"};
+                        socket.broadcast.emit('calling', msg);
+                        console.log(msg);
                         // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
                         
                     }
                 }
             });
         } else {
-            socket.broadcast.emit('calling', {message:"user not found",result: 0, type: "result"});
+            let msg = {message:"user not found",result: 0, type: "result"};
+            socket.broadcast.emit('calling', msg);
             client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
-            console.log("Delete calling " + user.key);
+            console.log(msg);
         }
     });
 
