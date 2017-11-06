@@ -167,6 +167,7 @@ io.on('connection', function(socket) { // Incoming connections from clients
             });
         }
     });
+    socket.broadcast.emit('calling',{"K_Signal_Call":"No"});
     socket.broadcast.emit('calling',{K_Signal_Call:"No"});
     socket.on('calling', function(user) {
 
