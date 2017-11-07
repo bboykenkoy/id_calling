@@ -160,12 +160,12 @@ module.exports = class CallManager {
                                                              let msg =  {key:user.key, message:"user not found", result: 0, type: "result"};
                                                              callback(msg,false);
                                                         } else {
-                                                            if (data.length > 0) {
-
-                                                                var sqlUpdate = "UPDATE `calling` SET `status` = '1' WHERE `users_key` = '"+user.key+"'";
+                                                            if (data.length > 0) { 
+                                                                var friendKey =  data[0].key;
+                                                                var sqlUpdate = "UPDATE `calling` SET `status` = '1' WHERE `users_key` = '"+user.key+"' OR `users_key` = '"+friendKey+"'";
                                                                 client.query(sqlUpdate,function(err,result,field){
                                                                     
-                                                                       let msg =  { key: user.key, friend_key: data[0].key, result: 1, type: "result"};
+                                                                       let msg =  { key: user.key, friend_key: friendKey, result: 1, type: "result"};
                                                 
                                                                         console.log(msg);
 
