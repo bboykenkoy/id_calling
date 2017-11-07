@@ -114,7 +114,7 @@ module.exports = class CallManager {
 
     socketEventMatchCall(user,callback){
 
-            console.log("request from calling " + user.key);
+            
 
             if (user.type == 'leave') {
                  let msg = {message:"user not found",result: 0, type: "result"};
@@ -127,6 +127,9 @@ module.exports = class CallManager {
             }
 
             else if (user && user.type == 'connect') {
+
+                console.log("request from calling " + user.key);
+                
                 var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
                 client.query(sqlCheckExit, function(e, d, f) {
                     if (e) {
