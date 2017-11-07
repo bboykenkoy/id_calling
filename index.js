@@ -150,9 +150,14 @@ io.on('connection', function(socket) { // Incoming connections from clients
     });
     socket.on('calling', function(user) {
                      
-         callManager.socketEventMatchCall(user,function(msg,result){
+        if(user.type){
+
+        }
+         callManager.socketEventMatchCall(user,function(msg,isLeave){
             
-            socket.emit('calling', msg);
+            if (!isLeave) {
+                socket.emit('calling', msg);
+            }
 
          });
          
