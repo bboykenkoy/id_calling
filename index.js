@@ -86,7 +86,7 @@ var urlParser = BASE.urlParser();
 /**********---------------------------*********
  **********------- FUNCTION ----------*********
  **********---------------------------*********/
-var callManager = require('./call.js');
+var callManager = require('./call');
 
 io.on('connection', function(socket) { // Incoming connections from clients
     var peer;
