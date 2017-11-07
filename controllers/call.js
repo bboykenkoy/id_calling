@@ -164,7 +164,7 @@ module.exports = class CallManager {
                                     if (data.length > 0) {
 
                                         var sqlUpdate = "UPDATE `calling` SET `status` = '1' WHERE `users_key` = '"+user.key+"'";
-                                        client.query(sqlUpdate,func(err,result,field){
+                                        client.query(sqlUpdate,function(err,result,field){
                                             
                                                let msg =  { key: user.key, friend_key: data[0].key, result: 1, type: "result"};
                         
