@@ -112,13 +112,13 @@ var client = BASE.client();
 
 module.exports = class CallManager {
 
-    function socketEventMatchCall(user){
+    socketEventMatchCall(user,callback){
 
             console.log("request from calling " + user.key);
 
-            if (user.type == 'close') {
+            if (user.type == 'leave') {
                  let msg = {message:"user not found",result: 0, type: "result"};
-                socket.emit('calling', msg);
+              //  socket.emit('calling', msg);
                 client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
                 console.log(msg);
             }
@@ -156,23 +156,27 @@ module.exports = class CallManager {
 
                                         var sqlUpdate = "UPDATE `calling` SET ``"
                                         let msg =  { key: user.key, friend_key: data[0].key, result: 1, type: "result"};
-                                        socket.emit('calling', msg);
+                                       // socket.emit('calling', msg);
                                         console.log(msg);
+
+                                        callback(msg,true);
                                         // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
                                     } else {
 
                                         let msg =  { message:"user not found", result: 0, type: "result"};
-                                        socket.emit('calling', msg);
+                                      //  socket.emit('calling', msg);
                                         // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
                                         console.log(msg);
+                                        callback(msg,false);
                                     }
                                 }
                             });
                         }else{
                             
                             let msg = {message:"user not found",result: 0, type: "result"};
-                            socket.emit('calling', msg);
+                            //socket.emit('calling', msg);
                             console.log(msg);
+                            callback(msg,false);
                             // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
                             
                         }
@@ -180,7 +184,8 @@ module.exports = class CallManager {
                 });
             } else {
                 let msg = {message:"user not found",result: 0, type: "result"};
-                socket.emit('calling', msg);
+                //socket.emit('calling', msg);
+                callback(msg,false);
                 client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
                 console.log(msg);
             }
@@ -194,7 +199,7 @@ module.exports = class CallManager {
 
 
     /*utils*/
-    function fillPointDate() {
+    fillPointDate() {
         var sql = "INSERT INTO `facebook_point`(facebook_id, users_key) SELECT `facebook_id`,`key` FROM `users` WHERE `key` NOT IN (SELECT `users_key` FROM `facebook_point`)";
         client.query(sql, function(error, data, fields) {
             if (error) {
@@ -208,11 +213,11 @@ module.exports = class CallManager {
 
 
 
-    function getRandomInt(min, max) {
+    getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function getInformationUser(users_key, result) {
+    getInformationUser(users_key, result) {
         var sql = "SELECT * FROM `users` WHERE `key`='" + users_key + "'";
         client.query(sql, function(error, data, fields) {
             if (error) {
@@ -225,7 +230,7 @@ module.exports = class CallManager {
         });
     }
 
-    function isJsonString(str) {
+    isJsonString(str) {
         try {
             JSON.parse(str);
         } catch (e) {
@@ -234,7 +239,7 @@ module.exports = class CallManager {
         return true;
     }
 
-    function isBase64(str) {
+    isBase64(str) {
         try {
             return btoa(atob(str)) == str;
         } catch (err) {
@@ -242,7 +247,7 @@ module.exports = class CallManager {
         }
     }
 
-    function echoResponse(status, data, message, error) {
+    echoResponse(status, data, message, error) {
         return JSON.stringify({
             status: status,
             data: data,
@@ -251,7 +256,7 @@ module.exports = class CallManager {
         });
     }
 
-    function echo5Response(status, data, other, message, error) {
+    echo5Response(status, data, other, message, error) {
         return JSON.stringify({
             status: status,
             data: data,
