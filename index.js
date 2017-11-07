@@ -11,6 +11,7 @@ eventEmitter.setMaxListeners(0);
 /* ----------------------------*/
 /* ---------- CONFIG ----------*/
 /* ----------------------------*/
+var callManager = require('../call.js');
 var config = require('./config.js');
 var Base = require('./base.js');
 var BASE = new Base();
@@ -86,7 +87,7 @@ var urlParser = BASE.urlParser();
 /**********---------------------------*********
  **********------- FUNCTION ----------*********
  **********---------------------------*********/
-var callManager = require('./call');
+
 
 io.on('connection', function(socket) { // Incoming connections from clients
     var peer;
