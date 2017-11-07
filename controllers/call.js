@@ -117,7 +117,7 @@ module.exports = class CallManager {
             
 
             if (user.type == 'leave') {
-                 let msg = {message:"user not found",result: 0, type: "result"};
+                // let msg = {message:"user not found",result: 0, type: "result"};
               //  socket.emit('calling', msg);
                 client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
                 console.log(msg);
@@ -129,7 +129,7 @@ module.exports = class CallManager {
             else if (user && user.type == 'connect') {
 
                 console.log("request from calling " + user.key);
-                
+
                 var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
                 client.query(sqlCheckExit, function(e, d, f) {
                     if (e) {
