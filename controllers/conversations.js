@@ -16,44 +16,7 @@ var async = require('async');
 /*********--------------------------*********
  **********------- MYSQL CONNECT ----*********
  **********--------------------------*********/
-var client;
 
-function startConnection() {
-    console.error('CONNECTING');
-    client = mysql.createConnection({
-        host: config.mysql_host,
-        user: config.mysql_user,
-        password: config.mysql_pass,
-        database: config.mysql_data
-    });
-    client.connect(function(err) {
-        if (err) {
-            console.error('CONNECT FAILED CONVERSATION', err.code);
-            startConnection();
-        } else {
-            console.error('CONNECTED CONVERSATION');
-        }
-    });
-    client.on('error', function(err) {
-        if (err.fatal)
-            startConnection();
-    });
-}
-startConnection();
-client.query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
-    }
-});
-client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET CHARACTER SET utf8mb4");
-    }
-});
 
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -61,8 +24,9 @@ client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
-var Authenticate = require('../authenticate.js');
-var auth = new Authenticate();
+var Base = require('../base.js');
+var BASE = new Base();
+var client = BASE.client();
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -82,7 +46,7 @@ router.post('/new', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var userSQL = "SELECT * FROM `conversations` WHERE `key`='" + req.body.key + "'";
             client.query(userSQL, function(error, data, fields) {
@@ -153,7 +117,7 @@ router.post('/update', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var userSQL = "SELECT * FROM `conversations` WHERE `key`='" + req.body.key + "'";
             client.query(userSQL, function(error, data, fields) {
@@ -197,7 +161,7 @@ router.post('/type=add', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var userSQL = "SELECT * FROM `conversations` WHERE `key`='" + req.body.key + "'";
             client.query(userSQL, function(error, data, fields) {
@@ -270,7 +234,7 @@ router.post('/type=remove', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var adminSQL = "SELECT `created_by` FROM `conversations` WHERE `key`='" + req.body.key + "'";
             client.query(adminSQL, function(eAdmin, dataAdmin, fieldAdmin) {
@@ -325,7 +289,7 @@ router.post('/type=leave', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var adminSQL = "SELECT `users_key` FROM `conversations` WHERE `key`='" + req.body.key + "'";
             client.query(adminSQL, function(eAdmin, dataAdmin, fieldAdmin) {
@@ -380,7 +344,7 @@ router.get('/type=countunread', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var userSQL = "SELECT `key` FROM conversations INNER JOIN members ON members.conversations_key = conversations.key AND members.users_key = '" + key + "' AND members.is_deleted='0'";
             client.query(userSQL, function(qError, qData, qFiels) {
@@ -428,7 +392,7 @@ router.post('/settings', urlParser, function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var userSQL = "SELECT * FROM `members` WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.conversations_key + "'";
             client.query(userSQL, function(error, data, fields) {
@@ -473,7 +437,7 @@ router.get('/:conversations_key/users_key=:key', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var sqlConver = "SELECT * FROM `conversations` WHERE `key`='" + req.params.conversations_key + "'";
             client.query(sqlConver, function(eConver, dConver, fConver) {

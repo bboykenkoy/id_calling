@@ -45,44 +45,9 @@ let transporter = nodemailer.createTransport({
 /*********--------------------------*********
  **********------- MYSQL CONNECT ----*********
  **********--------------------------*********/
-var client;
-
-function startConnection() {
-    console.error('CONNECTING');
-    client = mysql.createConnection({
-        host: config.mysql_host,
-        user: config.mysql_user,
-        password: config.mysql_pass,
-        database: config.mysql_data
-    });
-    client.connect(function(err) {
-        if (err) {
-            console.error('CONNECT FAILED USERS', err.code);
-            startConnection();
-        } else {
-            console.error('CONNECTED USERS');
-        }
-    });
-    client.on('error', function(err) {
-        if (err.fatal)
-            startConnection();
-    });
-}
-startConnection();
-client.query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
-    }
-});
-client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET CHARACTER SET utf8mb4");
-    }
-});
+var Base = require('../base.js');
+var BASE = new Base();
+var client = BASE.client();
 /*********--------------------------*********
  **********------- FUNCTION ------*********
  **********--------------------------*********/

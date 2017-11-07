@@ -29,44 +29,7 @@ let MOILANLAY = 10;
 /*********--------------------------*********
  **********------- MYSQL CONNECT ----*********
  **********--------------------------*********/
-var client;
 
-function startConnection() {
-    console.error('CONNECTING');
-    client = mysql.createConnection({
-        host: config.mysql_host,
-        user: config.mysql_user,
-        password: config.mysql_pass,
-        database: config.mysql_data
-    });
-    client.connect(function(err) {
-        if (err) {
-            console.error('CONNECT FAILED MESSAGE', err.code);
-            startConnection();
-        } else {
-            console.error('CONNECTED MESSAGE');
-        }
-    });
-    client.on('error', function(err) {
-        if (err.fatal)
-            startConnection();
-    });
-}
-startConnection();
-client.query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
-    }
-});
-client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET CHARACTER SET utf8mb4");
-    }
-});
 
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -74,8 +37,9 @@ client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
-var Authenticate = require('../authenticate.js');
-var auth = new Authenticate();
+var Base = require('../base.js');
+var BASE = new Base();
+var client = BASE.client();
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -110,7 +74,7 @@ router.get('/type=wall', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + friend_key + "' AND `is_active`='1'";
@@ -208,7 +172,7 @@ router.get('/type=albums', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var selectSQL;
@@ -287,7 +251,7 @@ router.get('/type=albumscount', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var selectSQL;
@@ -355,7 +319,7 @@ router.get('/type=mywall', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' AND `is_active`='1'";
             var tagsSQL = " OR `id` IN (SELECT `posts_id` FROM `tags` WHERE `users_key`='" + key + "')";
@@ -456,7 +420,7 @@ router.get('/type=myalbums', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' AND `is_active`='1'";
             var haveImage = " AND `id` IN (SELECT `posts_id` FROM `store_images` WHERE `users_key`='" + key + "')";
@@ -529,7 +493,7 @@ router.get('/type=avatar', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' AND `type`='avatar'";
             var orderBy = "ORDER BY `posted_time` DESC";
@@ -625,7 +589,7 @@ router.get('/type=cover', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' AND `type`='cover'";
             var orderBy = "ORDER BY `posted_time` DESC";
@@ -722,7 +686,7 @@ router.get('/type=myalbumscount', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' AND `is_active`='1'";
             var haveImage = " AND `id` IN (SELECT `posts_id` FROM `store_images` WHERE `users_key`='" + key + "')";
@@ -766,7 +730,7 @@ router.get('/type=feeds', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' OR `users_key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + key + "' AND `is_following`=1) AND `is_active`='1'";
             var tagsSQL = " OR `id` IN (SELECT `posts_id` FROM `tags` WHERE `users_key`='" + key + "')";
@@ -866,7 +830,7 @@ router.get('/type=badge', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var userSQL = "SELECT * FROM `notification_feed` INNER JOIN `notification_refresh` ON `notification_feed`.`users_key` = '" + key + "' AND `notification_feed`.`users_key` = notification_refresh.users_key AND `notification_feed`.`time` > `notification_refresh`.`time`";
             client.query(userSQL, function(error, data, fields) {

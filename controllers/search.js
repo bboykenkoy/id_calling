@@ -12,56 +12,15 @@ var urlParser = bodyParser.urlencoded({ extended: false });
 router.use(bodyParser.json());
 var async = require('async');
 
-
-/*********--------------------------*********
- **********------- MYSQL CONNECT ----*********
- **********--------------------------*********/
-var client;
-
-function startConnection() {
-    console.error('CONNECTING');
-    client = mysql.createConnection({
-        host: config.mysql_host,
-        user: config.mysql_user,
-        password: config.mysql_pass,
-        database: config.mysql_data
-    });
-    client.connect(function(err) {
-        if (err) {
-            console.error('CONNECT FAILED MESSAGE', err.code);
-            startConnection();
-        } else {
-            console.error('CONNECTED MESSAGE');
-        }
-    });
-    client.on('error', function(err) {
-        if (err.fatal)
-            startConnection();
-    });
-}
-startConnection();
-client.query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
-    }
-});
-client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET CHARACTER SET utf8mb4");
-    }
-});
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
-var Authenticate = require('../authenticate.js');
-var auth = new Authenticate();
+var Base = require('../base.js');
+var BASE = new Base();
+var client = BASE.client();
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
@@ -80,7 +39,7 @@ router.get('/nickname=:nickname', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var request_uri = decodeURIComponent(req.params.nickname);
             var sqlu = "SELECT * FROM `users` WHERE `nickname` LIKE '%" + request_uri + "%' LIMIT 30";
@@ -144,7 +103,7 @@ router.get('/email=:email', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var request_uri = decodeURIComponent(req.params.email);
             var sqlu = "SELECT * FROM `users` WHERE `email`='" + request_uri + "' LIMIT 1";
@@ -192,7 +151,7 @@ router.get('/phone_number=:phone_number', function(req, res) {
     if (key.length == 0) {
         return res.sendStatus(300);
     }
-    auth.authenticateWithToken(key, access_token, function(logged) {
+    BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var calling_code = req.body.calling_code || req.query.calling_code || req.params.calling_code;
             calling_code = calling_code.replace(/\s/g, '');

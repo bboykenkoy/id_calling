@@ -172,7 +172,15 @@ io.on('connection', function(socket) { // Incoming connections from clients
 
          console.log("request from calling " + user.key);
 
-        if (user && user.type == 'connect') {
+        if (user.type == 'close') {
+             let msg = {message:"user not found",result: 0, type: "result"};
+            socket.emit('calling', msg);
+            client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
+            console.log(msg);
+        }
+
+        else 
+            if (user && user.type == 'connect') {
             var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
             client.query(sqlCheckExit, function(e, d, f) {
                 if (e) {
@@ -187,7 +195,8 @@ io.on('connection', function(socket) { // Incoming connections from clients
                     }
                 }
             });
-            // 
+            
+
             var sqlUser = "SELECT * FROM `users` WHERE `key`='" + user.key + "'";
             client.query(sqlUser, function(err, dt, fl) {
                 if (err) {
@@ -200,7 +209,9 @@ io.on('connection', function(socket) { // Incoming connections from clients
                                 console.log(error);
                             } else {
                                 if (data.length > 0) {
-                                      let msg =  { key: user.key, friend_key: data[0].key, result: 1, type: "result"};
+
+                                    var sqlUpdate = "UPDATE `calling` SET ``"
+                                    let msg =  { key: user.key, friend_key: data[0].key, result: 1, type: "result"};
                                     socket.emit('calling', msg);
                                     console.log(msg);
                                     // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
