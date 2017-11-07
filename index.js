@@ -149,17 +149,31 @@ io.on('connection', function(socket) { // Incoming connections from clients
         }
     });
     socket.on('calling', function(user) {
-                     
-        if(user.type){
-
-        }
-         callManager.socketEventMatchCall(user,function(msg,isLeave){
-            
+ 
+        callManager.socketEventMatchCall(user,function(msg,isLeave){
             if (!isLeave) {
-                socket.emit('calling', msg);
-            }
+                 socket.emit('calling', msg);
+                }
+            });  
+         
+    });
 
-         });
+    socket.on('matching', function(user) {
+    
+        var target = findUserByUID(msg.to);
+
+        console.log("Matching Calling --------------- to user:" + msg.to + "Socket id : ");
+
+            //emit for ios
+        if (target) {
+
+            socket.broadcast.to(target.socketid).emit('matching', msg);
+             
+        } else {
+
+            socket.broadcast.emit("matching", msg);
+
+         }
          
     });
 
