@@ -11,6 +11,7 @@ eventEmitter.setMaxListeners(0);
 /* ----------------------------*/
 /* ---------- CONFIG ----------*/
 /* ----------------------------*/
+// var callManager = require('.controllers/users');
 var config = require('./config.js');
 var Base = require('./base.js');
 var BASE = new Base();
@@ -85,7 +86,10 @@ var client = BASE.client();
 var urlParser = BASE.urlParser();
 /**********---------------------------*********
  **********------- FUNCTION ----------*********
- **********---------------------------*********/
+ **********---------------------------*********/ 
+var call = require('./controllers/call.js');
+var callManager = new call();
+
 io.on('connection', function(socket) { // Incoming connections from clients
     var peer;
     socket.on('online', function(user) {
@@ -145,67 +149,18 @@ io.on('connection', function(socket) { // Incoming connections from clients
         }
     });
     socket.on('calling', function(user) {
+                     
+        if(user.type){
 
-         console.log("request from calling " + user.key);
-
-        if (user && user.type == 'connect') {
-            var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
-            client.query(sqlCheckExit, function(e, d, f) {
-                if (e) {
-                    console.log(e);
-                } else {
-                    if (d.length > 0) {
-                        client.query("UPDATE `calling` SET `is_calling`=0 WHERE `users_key`='" + user.key + "'");
-                        console.log("Update is_calling " + user.key);
-                    } else {
-                        client.query("INSERT INTO `calling` SET `users_key`='" + user.key + "'");
-                        console.log("Insert calling " + user.key);
-                    }
-                }
-            });
-            // 
-            var sqlUser = "SELECT * FROM `users` WHERE `key`='" + user.key + "'";
-            client.query(sqlUser, function(err, dt, fl) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    if (dt.length > 0) {
-                        var sqlDataArray = "SELECT * FROM `users` WHERE `key` IN (SELECT `users_key` FROM `calling` WHERE `is_calling`=0 AND `users_key`!='" + user.key + "') ORDER BY RAND() LIMIT 1";
-                        client.query(sqlDataArray, function(error, data, fields) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                if (data.length > 0) {
-                                      let msg =  { key: user.key, friend_key: data[0].key, result: 1, type: "result"};
-                                    socket.emit('calling', msg);
-                                    console.log(msg);
-                                    // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
-                                } else {
-
-                                    let msg =  { message:"user not found", result: 0, type: "result"};
-                                    socket.emit('calling', msg);
-                                    // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
-                                    console.log(msg);
-                                }
-                            }
-                        });
-                    }else{
-                        
-                        let msg = {message:"user not found",result: 0, type: "result"};
-                        socket.emit('calling', msg);
-                        console.log(msg);
-                        // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
-                        
-                    }
-                }
-            });
-        } else {
-            let msg = {message:"user not found",result: 0, type: "result"};
-            socket.emit('calling', msg);
-            client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
-            console.log(msg);
         }
+         callManager.socketEventMatchCall(user,function(msg,isLeave){
+            
+            if (!isLeave) {
+                socket.emit('calling', msg);
+            }
 
+         });
+         
     });
 
     // Roi vao disconnect
