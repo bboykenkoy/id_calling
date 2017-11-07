@@ -10,6 +10,6 @@ router.use('/feeds', require('./feeds'));
 router.use('/posts', require('./posts'));
 router.use('/couples', require('./couples'));
 router.use('/ask', require('./ask'));
-router.use('/call', require('./call'));
+
 
 module.exports = router;

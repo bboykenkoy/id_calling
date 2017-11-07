@@ -87,7 +87,7 @@ var urlParser = BASE.urlParser();
 /**********---------------------------*********
  **********------- FUNCTION ----------*********
  **********---------------------------*********/
-
+var callManager = require('../call.js');
 
 io.on('connection', function(socket) { // Incoming connections from clients
     var peer;
@@ -157,7 +157,7 @@ io.on('connection', function(socket) { // Incoming connections from clients
              let msg = {message:"user not found",result: 0, type: "result"};
             socket.emit('calling', msg);
             client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
-            console.log(msg);
+            console.log(msg);x
         }
 
         else 
@@ -221,7 +221,7 @@ io.on('connection', function(socket) { // Incoming connections from clients
             client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
             console.log(msg);
         }
-        
+
          
     });
 
