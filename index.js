@@ -428,8 +428,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(express.static(__dirname + '/ask'));
-
 app.get('/listUsers', function(req, res) {
     res.end(JSON.stringify(users, censor));
 });
@@ -439,15 +437,28 @@ app.get('/', function(req, res) {
 
 /*********--------GET Version----------*********/
 app.get('/type=version', urlParser, function(req, res) {
-    var sql = "SELECT * FROM `versions` ORDER BY `id` DESC LIMIT 1";
-    client.query(sql, function(error, data, fields) {
-        if (error) {
-            console.log(error);
-            return res.sendStatus(300);
-        } else {
-            return res.send(echoResponse(200, data, 'success', false));
-        }
-    });
+    var device = req.body.device || req.params.device || req.query.device;
+    if (device && device.length > 0 && typeof device == 'string') {
+        var sql = "SELECT * FROM `versions` WHERE `device`='android' ORDER BY `id` DESC LIMIT 1";
+        client.query(sql, function(error, data, fields) {
+            if (error) {
+                console.log(error);
+                return res.sendStatus(300);
+            } else {
+                return res.send(echoResponse(200, data, 'success', false));
+            }
+        });
+    } else {
+        var sql = "SELECT * FROM `versions` WHERE `device`='ios' ORDER BY `id` DESC LIMIT 1";
+        client.query(sql, function(error, data, fields) {
+            if (error) {
+                console.log(error);
+                return res.sendStatus(300);
+            } else {
+                return res.send(echoResponse(200, data, 'success', false));
+            }
+        });
+    }
 });
 
 
