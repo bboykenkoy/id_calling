@@ -259,4 +259,4 @@ function echo5Response(status, data, other, message, error) {
     });
 }
 
-module.exports = call;
+module.exports = router;
