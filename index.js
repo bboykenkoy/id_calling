@@ -11,7 +11,7 @@ eventEmitter.setMaxListeners(0);
 /* ----------------------------*/
 /* ---------- CONFIG ----------*/
 /* ----------------------------*/
-var callManager = require('../controllers/users');
+var callManager = require('.controllers/users');
 var config = require('./config.js');
 var Base = require('./base.js');
 var BASE = new Base();
