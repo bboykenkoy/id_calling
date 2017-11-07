@@ -168,7 +168,7 @@ module.exports = class CallManager {
 
 
     /*Call signle with friend*/
-    querySearchUser(user){
+    function querySearchUser(user){
 
          var sqlUser = "SELECT * FROM `users` WHERE `key`='" + user.key + "'";
                 client.query(sqlUser, function(err, dt, fl) {
