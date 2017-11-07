@@ -4,46 +4,55 @@ var express = require('express');
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var md5 = require('md5');
-var escapeSQL = require('sqlstring');
-var config = require('./config.js');
 app.io = io;
-//access-token
-var jwt = require('jsonwebtoken');
-//---
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
 eventEmitter.setMaxListeners(0);
-
+/* ----------------------------*/
+/* ---------- CONFIG ----------*/
+/* ----------------------------*/
+var config = require('./config.js');
+var Base = require('./base.js');
+var BASE = new Base();
+/* ----------------------------*/
+/* ----------------------------*/
+var md5 = require('md5');
+var escapeSQL = require('sqlstring');
+var jwt = require('jsonwebtoken');
 var firebase = require('firebase');
-
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var moment = require('moment-timezone');
-var connections = [];
+var async = require('async');
+var _ = require('lodash');
+var moment = require('moment-timezone');
+/* -------------------------------------------------------------------------------- */
+/* ------------------------------ NOTIFICATION ------------------------------------ */
+/* -------------------------------------------------------------------------------- */
+/* -------------------------*/
+/* ---------- APN ----------*/
+/* -------------------------*/
 var apn = require('apn');
 var apnService = new apn.Provider({
     cert: "certificates/cert.pem",
     key: "certificates/key.pem",
 });
-//-- FCM
+/* -------------------------*/
+/* ---------- FCM ----------*/
+/* -------------------------*/
 var FCM = require('fcm-push');
 var serverKey = config.android;
 var collapse_key = 'com.android.abc';
 var fcm = new FCM(serverKey);
+/* -------------------------*/
+/* -------------------------*/
 var avatarApp = "http://i.imgur.com/rt1NU2t.png";
-
-var async = require('async');
-var _ = require('lodash');
-var moment = require('moment-timezone');
-
-
+/* -------------------------*/
+/* -------------------------*/
+/* -------------------------------------------------------------------------------- */
+/* ------------------------------ INIT VARIABLE ----------------------------------- */
+/* -------------------------------------------------------------------------------- */
 app.use(bodyParser.json({ limit: "50mb" }));
-var urlParser = bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 });
-
-
-
-
 
 var configFirebase = {
     apiKey: "AIzaSyAmYRokQALuWuM53U3O2n2d58N3vdml8uc",
@@ -52,64 +61,31 @@ var configFirebase = {
     storageBucket: "thinkdiff-71ab0.appspot.com",
     messagingSenderId: "837773260215"
 };
-
 firebase.initializeApp(configFirebase);
-
+/* -------------------------------------------------------------------------------- */
+/* ------------------------------ START SERVER ------------------------------------ */
+/* -------------------------------------------------------------------------------- */
 server.listen(config.app_port, config.app_ip, function() {
-    console.log("Server running @ http://" + config.app_ip + ":" + config.app_port);
+    console.log("SERVER RUNNING @ http://" + config.app_ip + ":" + config.app_port);
 });
 server.timeout = 60000;
-
-// --- CREATED VARIABLE ---
-// ------------------------
-// ------------------------
+/* -------------------------*/
+/* -------------------------*/
+/* --- CREATED VARIABLE ----*/
+/* -------------------------*/
+/* -------------------------*/
 var users = [];
 var index = 0;
 var incomings = [];
-/*********--------------------------*********
+var connections = [];
+/**********--------------------------*********
  **********------- MYSQL CONNECT ----*********
  **********--------------------------*********/
-var client;
-
-function startConnection() {
-    console.error('CONNECTING');
-    client = mysql.createConnection({
-        host: config.mysql_host,
-        user: config.mysql_user,
-        password: config.mysql_pass,
-        database: config.mysql_data
-    });
-    client.connect(function(err) {
-        if (err) {
-            console.error('CONNECT FAILED MESSAGE', err.code);
-            startConnection();
-        } else {
-            console.error('CONNECTED MESSAGE');
-        }
-    });
-    client.on('error', function(err) {
-        if (err.fatal)
-            startConnection();
-    });
-}
-startConnection();
-client.query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
-    }
-});
-client.query("SET CHARACTER SET utf8mb4", function(error, results, fields) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("SET CHARACTER SET utf8mb4");
-    }
-});
-/*********--------------------------*********
- **********------- FUNCTION ------*********
- **********--------------------------*********/
+var client = BASE.client();
+var urlParser = BASE.urlParser();
+/**********---------------------------*********
+ **********------- FUNCTION ----------*********
+ **********---------------------------*********/
 io.on('connection', function(socket) { // Incoming connections from clients
     var peer;
     socket.on('online', function(user) {
