@@ -134,7 +134,7 @@ module.exports = class CallManager {
                     if (e) {
                         console.log(e);
                     } else {
-                        var query = nil;
+                        var query;
                         if (d.length > 0) {
                             query = "UPDATE `calling` SET `is_calling`=0 WHERE `users_key`='" + user.key + "'";
                            
