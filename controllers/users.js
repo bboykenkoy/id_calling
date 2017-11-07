@@ -1959,7 +1959,37 @@ router.post('/seen_profile', urlParser, function(req, res) {
     });
 });
 
-
+router.post('/facebook_data', urlParser, function(req, res) {
+    var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
+    var key = req.body.key || req.query.key || req.params.key;
+    if (key.length == 0) {
+        return res.sendStatus(300);
+    }
+    BASE.authenticateWithToken(key, access_token, function(logged) {
+        if (logged) {
+            var sql = "SELECT * FROM `users` WHERE `key`='" + key + "'";
+            delete req.body.key;
+            delete req.body.access_token;
+            req.body.users_key = key;
+            BASE.getObjectWithSQL(sql, function(user) {
+                if (user) {
+                    var sql2 = escapeSQL.format("INSERT INTO `facebook_informations` SET ?", req.body);
+                    BASE.insertWithSQL(sql2, function(status){
+                        if (status) {
+                            return res.send(echoResponse(200, 'Insert successfully', 'success', false));
+                        } else {
+                            return res.send(echoResponse(404, 'Insert Failed.', 'success', true));
+                        }
+                    });
+                } else {
+                    return res.send(echoResponse(404, 'User not exists', 'success', true));
+                }
+            });
+        } else {
+            return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+        }
+    });
+});
 
 /*********--------------------------*********
  **********------ ECHO RESPONSE -----*********
