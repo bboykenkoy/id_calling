@@ -162,7 +162,7 @@ module.exports = class CallManager {
                                                         } else {
                                                             if (data.length > 0) { 
                                                                 var friendKey =  data[0].key;
-                                                                var sqlUpdate = "UPDATE `calling` SET `status` = '1' WHERE `users_key` = '"+user.key+"' OR `users_key` = '"+friendKey+"'";
+                                                                var sqlUpdate = "UPDATE `calling` SET `is_calling` = '1' WHERE `users_key` = '"+user.key+"' OR `users_key` = '"+friendKey+"'";
                                                                 client.query(sqlUpdate,function(err,result,field){
                                                                     
                                                                        let msg =  { key: user.key, friend_key: friendKey, result: 1, type: "result"};
