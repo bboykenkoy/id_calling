@@ -8,8 +8,8 @@ router.use('/messages', require('./messages'));
 router.use('/search', require('./search'));
 router.use('/feeds', require('./feeds'));
 router.use('/posts', require('./posts'));
+router.use('/couples', require('./couples'));
+router.use('/ask', require('./ask'));
 router.use('/call', require('./call'));
-router.use('/ask', require('./ask'));
-router.use('/ask', require('./ask'));
 
 module.exports = router;
