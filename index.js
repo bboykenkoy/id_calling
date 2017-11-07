@@ -158,7 +158,7 @@ io.on('connection', function(socket) { // Incoming connections from clients
          
     });
 
-    socket.on('matching', function(user) {
+    socket.on('matching', function(msg) {
     
         var target = findUserByUID(msg.to);
 
