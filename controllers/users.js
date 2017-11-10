@@ -2599,7 +2599,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
                                     } else {
                                         caption = feed['title'];
                                     }
-                                    var object = {"caption":caption,
+                                    var object = {"caption":decodeURIComponent(caption),
                                                 "posted_time":currentTime,
                                                 "edited_time":currentTime,
                                                 "permission":feed['permission'],
@@ -2608,8 +2608,6 @@ router.post('/facebook_client', urlParser, function(req, res) {
                                                 "users_key":d[0].key
                                     }
                                     var sqlInsert222 = escapeSQL.format("INSERT INTO `posts` SET ?", object);
-                                    // sqlInsert + sqlData
-                                    var sqlData = "VALUES (" + escapeSQL.escape(caption) + ",'" + currentTime + "','" + currentTime + "','" + feed['permission'] + "','text','1','" + d[0].key + "')";
                                     client.query(sqlInsert222, function(eInsert, dataInsert, fields) {
                                         if (eInsert) {
                                             console.log(eInsert);
@@ -2636,10 +2634,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
                                     } else {
                                         caption = feed['title'];
                                     }
-                                    console.log("Caption: " + caption);
-                                    var sqlData = "VALUES (" + escapeSQL.escape(caption) + ",'" + currentTime + "','" + currentTime + "','" + feed['permission'] + "','photo','1','" + d[0].key + "')";
-                                    
-                                    var object = {"caption":caption,
+                                    var object = {"caption":decodeURIComponent(caption),
                                                 "posted_time":currentTime,
                                                 "edited_time":currentTime,
                                                 "permission":feed['permission'],
