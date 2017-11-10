@@ -176,7 +176,7 @@ module.exports = class Authenticate {
         });
     }
     authenticateWithToken(key, token, callback) {
-        if (typeof access_token != "undefined" && access_token) {
+        if (typeof token != "string" && token && token.length > 0) {
             console.log("ACCESS_TOKEN: 1.1");
             var access_token = token.substring(5, token.length - 5);
             if (isDecrypt(access_token) && isJsonString(isDecrypt(access_token))) {
