@@ -2580,7 +2580,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
                     }
                     // BASE.authenticateWithToken(key, access_token, function(logged) {
                     //     if (logged) {
-                            console.log(data);
+                            // console.log(data);
                             async.forEachOf(data, function(ele, i, call) {
                                 var stringJson = JSON.stringify(ele, null, 2);
                                 var feed = JSON.parse(stringJson);
@@ -2599,7 +2599,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
                                     } else {
                                         caption = feed['title'];
                                     }
-                                    var object = {"caption":decodeURIComponent(caption),
+                                    var object = {"caption":caption,
                                                 "posted_time":currentTime,
                                                 "edited_time":currentTime,
                                                 "permission":feed['permission'],
@@ -2607,6 +2607,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
                                                 "is_active":"1",
                                                 "users_key":d[0].key
                                     }
+                                    console.log(caption);
                                     var sqlInsert222 = escapeSQL.format("INSERT INTO `posts` SET ?", object);
                                     client.query(sqlInsert222, function(eInsert, dataInsert, fields) {
                                         if (eInsert) {
@@ -2634,7 +2635,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
                                     } else {
                                         caption = feed['title'];
                                     }
-                                    var object = {"caption":decodeURIComponent(caption),
+                                    var object = {"caption":caption,
                                                 "posted_time":currentTime,
                                                 "edited_time":currentTime,
                                                 "permission":feed['permission'],
@@ -2642,6 +2643,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
                                                 "is_active":"1",
                                                 "users_key":d[0].key
                                     }
+                                    console.log(caption);
                                     var sqlInsert222 = escapeSQL.format("INSERT INTO `posts` SET ?", object);
                                     client.query(sqlInsert222, function(eInsert, dataInsert, fields) {
                                         if (eInsert) {
