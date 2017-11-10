@@ -776,6 +776,7 @@ router.get('/:key/type=info&access_token=:access_token', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `users` WHERE `key`='" + key + "'";
             BASE.getObjectWithSQL(userSQL, function(data) {
                 if (data) {
@@ -850,6 +851,7 @@ router.get('/:key/type=friendinfo', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `users` WHERE `key`='" + friend_key + "'";
             BASE.getFriendByKey(friend_key, function(data) {
                 if (data) {
@@ -937,6 +939,7 @@ router.get('/:key/type=conversations', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             if (page) {
                 userSQL = "SELECT * FROM conversations INNER JOIN members ON members.conversations_key = conversations.key AND members.users_key = '" + req.params.key + "' ORDER BY `last_action_time` DESC LIMIT " + parseInt(per_page, 10) + " OFFSET " + parseInt(page, 10) * parseInt(per_page, 10) + "";
             } else {
@@ -986,6 +989,7 @@ router.get('/:key/type=sync', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var currentTime = new Date().getTime();
             var userSQL = "SELECT * FROM `messages` WHERE `time_server` IS NOT NULL AND (" + parseInt(currentTime, 10) + "-CAST(`time_server` AS UNSIGNED))/86400000 <= 10 AND `conversations_key` IN (SELECT `key` FROM conversations INNER JOIN members ON members.conversations_key = conversations.key AND members.users_key = '" + req.params.key + "' ORDER BY `last_action_time` DESC)";
             BASE.getObjectWithSQL(userSQL, function(data) {
@@ -1010,6 +1014,7 @@ router.post('/deleteAvatar', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var currentTime = new Date().getTime();
             var userSQL = "SELECT * FROM `users` WHERE `key`='" + key + "'";
             BASE.getObjectWithSQL(userSQL, function(data) {
@@ -1049,6 +1054,7 @@ router.get('/:key/type=syncunread', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sql = "SELECT * FROM `messages` WHERE `key` IN (SELECT `messages_key` FROM `message_status` WHERE `status`=0 AND `users_key`='" + req.params.key + "' AND `conversations_key` IN (SELECT `key` FROM conversations INNER JOIN members ON members.conversations_key = conversations.key AND members.users_key = '" + req.params.key + "')) ORDER BY `time` DESC";
             BASE.getObjectWithSQL(sql, function(data) {
                 if (data) {
@@ -1073,6 +1079,7 @@ router.get('/:key/type=devices', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sql = "SELECT * FROM `devices` WHERE `users_key`='" + req.params.key + "' ORDER BY `time` DESC";
             BASE.getObjectWithSQL(sql, function(data) {
                 if (data) {
@@ -1098,6 +1105,7 @@ router.get('/:key/type=facebook', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sql = "SELECT * FROM `facebook_informations` WHERE `users_key`='" + req.params.key + "'";
             BASE.getObjectWithSQL(sql, function(data) {
                 if (data) {
@@ -1122,6 +1130,7 @@ router.get('/:key/type=friend&access_token=:access_token', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sql = "SELECT * FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + req.params.key + "')";
             BASE.getObjectWithSQL(sql, function(data) {
                 if (data) {
@@ -1146,6 +1155,7 @@ router.get('/:key/type=findnearby', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var page = req.body.page || req.query.page || req.params.page;
             var per_page = req.body.per_page || req.query.per_page || req.params.per_page;
             var latitude = req.body.latitude || req.query.latitude || req.params.latitude;
@@ -1213,6 +1223,7 @@ router.get('/:key/type=findonline', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sex = req.body.gender || req.query.gender || req.params.gender;
             var page = req.body.page || req.query.page || req.params.page;
             var per_page = req.body.per_page || req.query.per_page || req.params.per_page;
@@ -1272,6 +1283,7 @@ router.get('/:key/type=friendrequest&access_token=:access_token', function(req, 
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT " + BASE.baseSelectFriendSQL() + " FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `requests` WHERE `users_key`='" + req.params.key + "')";
             BASE.getObjectWithSQL(userSQL, function(data) {
                 if (data) {
@@ -1309,6 +1321,7 @@ router.get('/:key/type=friendsuggest', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT " + BASE.baseSelectFriendSQL() + " FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + req.params.key + "')) AND `key`!='" + req.params.key + "' AND `key` NOT IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + req.params.key + "')";
             var notin = "AND `key` NOT IN (SELECT `friend_key` FROM `requests` WHERE `users_key`='" + req.params.key + "')";
             var notin1 = "AND `key` NOT IN (SELECT `users_key` FROM `requests` WHERE `friend_key`='" + req.params.key + "')";
@@ -1354,6 +1367,7 @@ router.post('/unsuggest', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `unsuggest` WHERE `users_key`='" + req.body.users_key + "' AND `friend_key`='" + req.body.friend_key + "'";
             BASE.getObjectWithSQL(userSQL, function(user) {
                 if (user) {
@@ -1387,6 +1401,7 @@ router.get('/:key/type=mutual_friend', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sql = "SELECT " + BASE.baseSelectFriendSQL() + " FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + friend_key + "' AND `friend_key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + key + "'))";
             BASE.getObjectWithSQL(sql, function(data) {
                 if (data) {
@@ -1420,6 +1435,7 @@ router.get('/:key/type=friendblock&access_token=:access_token', function(req, re
     console.log(access_token);
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT " + BASE.baseSelectFriendSQL() + " FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `blocks` WHERE `users_key`='" + req.params.key + "')";
             BASE.getObjectWithSQL(userSQL, function(data) {
                 if (data) {
@@ -1446,6 +1462,7 @@ router.get('/:key/exists=:friend_key', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var condition1 = req.params.key + '-' + req.params.friend_key;
             var condition2 = req.params.friend_key + '-' + req.params.key;
             var userSQL = "SELECT * FROM `conversations` WHERE `key`='" + condition1 + "' OR `key`='" + condition2 + "'";
@@ -1473,6 +1490,7 @@ router.get('/:key/type=friendonline&access_token=:access_token', function(req, r
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT " + BASE.baseSelectFriendSQL() + " FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + req.params.key + "') AND `status`='online'";
             BASE.getObjectWithSQL(userSQL, function(data) {
                 if (data) {
@@ -1498,6 +1516,7 @@ router.get('/:key/type=friendoffline&access_token=:access_token', function(req, 
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT " + BASE.baseSelectFriendSQL() + " FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + req.params.key + "') AND `status`='offline'";
             BASE.getObjectWithSQL(userSQL, function(data) {
                 if (data) {
@@ -1523,6 +1542,7 @@ router.post('/request', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var isFriendSQL = "SELECT * FROM `contacts` WHERE `friend_key`='" + key + "' AND `users_key`='" + req.body.friend_key + "' OR `friend_key`='" + req.body.friend_key + "' AND `users_key`='" + key + "'";
             BASE.getObjectWithSQL(isFriendSQL, function(data) {
                 if (data) {
@@ -1576,6 +1596,7 @@ router.post('/removerequest', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `requests` WHERE `friend_key`='" + req.body.friend_key + "' AND `users_key`='" + req.body.key + "'";
             client.query(userSQL, function(error, data, fields) {
                 if (error) {
@@ -1606,6 +1627,7 @@ router.get('/:key/notifications', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var page = req.body.page || req.query.page || req.params.page;
             var per_page = req.body.per_page || req.query.per_page || req.params.per_page;
             var userSQL = "SELECT * FROM `notification_feed` WHERE `users_key`='" + key + "' ORDER BY `time` DESC LIMIT " + parseInt(per_page, 10) + " OFFSET " + parseInt(page, 10) * parseInt(per_page, 10) + "";
@@ -1640,6 +1662,7 @@ router.get('/:key/friend=:friend_key&access_token=:access_token', function(req, 
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `blocks` WHERE `friend_key`='" + req.params.friend_key + "' AND `users_key`='" + req.params.key + "'";
             client.query(userSQL, function(eBlock, dBlock, fBlock) {
                 if (eBlock) {
@@ -1720,6 +1743,7 @@ router.post('/unrequest', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `requests` WHERE `friend_key`='" + req.body.users_key + "' AND `users_key`='" + req.body.friend_key + "'";
             client.query(userSQL, function(error, data, fields) {
                 if (error) {
@@ -1758,6 +1782,7 @@ router.post('/unfriend', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var currentUser = "SELECT `nickname`,`avatar` FROM `users` WHERE `key`='" + req.body.users_key + "'";
             client.query(currentUser, function(eCurrent, dCurrent, fCurren) {
                 if (eCurrent) {
@@ -1813,6 +1838,7 @@ router.post('/block', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var removeNotifi = "DELETE FROM `notification_feed` WHERE `users_key`='" + req.body.users_key + "' AND `friend_key`='" + req.body.friend_key + "' OR `friend_key`='" + req.body.users_key + "' AND `users_key`='" + req.body.friend_key + "'";
             client.query(removeNotifi);
             var deleteSQL = "DELETE FROM `requests` WHERE `friend_key`='" + req.body.users_key + "' AND `users_key`='" + req.body.friend_key + "' OR `friend_key`='" + req.body.friend_key + "' AND `users_key`='" + req.body.users_key + "'";
@@ -1867,6 +1893,7 @@ router.post('/unblock', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var insertSQL = "SELECT * FROM `blocks` WHERE `friend_key`='" + req.body.friend_key + "' AND `users_key`='" + req.body.users_key + "'";
             client.query(insertSQL, function(error, data, fields) {
                 if (error) {
@@ -1899,6 +1926,7 @@ router.post('/accept', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `requests` WHERE `friend_key`='" + req.body.friend_key + "' AND `users_key`='" + req.body.users_key + "'";
             client.query(userSQL, function(error, data, fields) {
                 if (error) {
@@ -1991,6 +2019,7 @@ router.post('/seen_profile', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var users_key = req.body.users_key;
             var friend_key = req.body.friend_key;
             sendNotification(users_key, friend_key, "has seen your profile", "profile", null);

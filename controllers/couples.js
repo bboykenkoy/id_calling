@@ -69,6 +69,7 @@ router.get('/type=all', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var country_code = req.body.country_code || req.query.country_code || req.params.country_code;
             var page = req.body.page || req.query.page || req.params.page;
             var per_page = req.body.per_page || req.query.per_page || req.params.per_page;
@@ -146,6 +147,7 @@ router.post('/type=params', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var page = req.body.page || req.query.page || req.params.page;
             var per_page = req.body.per_page || req.query.per_page || req.params.per_page;
             //Param value
@@ -356,6 +358,7 @@ router.get('/type=like', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var selectUser = "SELECT * FROM `couple_like` WHERE `users_key`='" + key + "' ORDER BY `time` DESC";
             client.query(selectUser, function(eSelect, dSelect, fSelect) {
                 if (eSelect) {
@@ -405,6 +408,7 @@ router.get('/type=check', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var sql = "SELECT * FROM `couple_like` WHERE `users_key`='" + key + "' AND `friend_key`='" + friend_key + "'";
             client.query(sql, function(error, data, fields) {
@@ -448,6 +452,7 @@ router.post('/type=deletelike', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var sqlDelte = "DELETE FROM `couple_like` WHERE `users_key`='" + key + "' AND `friend_key`='" + friend_key + "'";
             client.query(sqlDelte, function(e, d, f) {
@@ -475,6 +480,7 @@ router.post('/type=deleteunlike', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var sqlDelte = "DELETE FROM `couple_unlike` WHERE `users_key`='" + key + "' AND `friend_key`='" + friend_key + "'";
             client.query(sqlDelte, function(e, d, f) {
@@ -502,6 +508,7 @@ router.get('/type=unlike', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var selectUser = "SELECT * FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `couple_unlike` WHERE `users_key`='" + key + "')";
             client.query(selectUser, function(eSelect, dSelect, fSelect) {
                 if (eSelect) {
@@ -532,6 +539,7 @@ router.get('/type=me', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var page = req.body.page || req.query.page || req.params.page;
             var per_page = req.body.per_page || req.query.per_page || req.params.per_page;
             var orderby = "LIMIT " + parseInt(per_page, 10) + " OFFSET " + parseInt(page, 10) * parseInt(per_page, 10);
@@ -583,6 +591,7 @@ router.post('/like', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sqlu = "SELECT * FROM `couple_like` WHERE `users_key`='" + req.body.users_key + "' AND `friend_key`='" + req.body.friend_key + "'";
             client.query(sqlu, function(errr, rsss, fiii) {
                 if (errr) {
@@ -641,6 +650,7 @@ router.post('/unlike', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sqlu = "SELECT * FROM `couple_unlike` WHERE `users_key`='" + req.body.users_key + "' AND `friend_key`='" + req.body.friend_key + "'";
             client.query(sqlu, function(errr, rsss, fiii) {
                 if (errr) {

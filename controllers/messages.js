@@ -124,6 +124,7 @@ router.post('/new', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `messages` WHERE `key`='" + req.body.key + "'";
             client.query(userSQL, function(error, data, fields) {
                 if (error) {
@@ -136,7 +137,6 @@ router.post('/new', urlParser, function(req, res) {
                         var dataMessage = req.body;
                         var currentTime = new Date().getTime();
                         var contentMessage = decodeURIComponent(req.body.content);
-                        delete req.body.access_token;
                         req.body.time_server = currentTime;
                         var insertSQL = escapeSQL.format("INSERT INTO `messages` SET ?", req.body);
                         client.query(insertSQL, function(eInsert, dInsert, fInsert) {
@@ -214,6 +214,7 @@ router.post('/update', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sqlMember = "SELECT * FROM `message_status` WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "'";
             client.query(sqlMember, function(er, rs, fl) {
                 if (er) {
@@ -244,6 +245,7 @@ router.post('/status', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sqlMember = "SELECT * FROM `message_status` WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.key + "'";
             client.query(sqlMember, function(er, rs, fl) {
                 if (er) {
@@ -276,6 +278,7 @@ router.post('/delete', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sqlMember = "SELECT * FROM `messages` WHERE `key`='" + req.body.key + "'";
             client.query(sqlMember, function(er, rs, fl) {
                 if (er) {
@@ -322,6 +325,7 @@ router.get('/:key/type=content', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sqlselect = "SELECT * FROM `messages` WHERE `key`='" + key + "'";
             client.query(sqlselect, function(eSelect, rSelect, fSelect) {
                 if (eSelect) {
@@ -358,6 +362,7 @@ router.get('/unread', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var type = req.body.type || req.query.type || req.params.type || req.headers['type'];
             var conversations_key = req.body.conversations_key || req.query.conversations_key || req.params.conversations_key || req.headers['conversations_key'];
             var users_key = req.body.users_key || req.query.users_key || req.params.users_key || req.headers['users_key'];
@@ -396,6 +401,7 @@ router.get('/readed', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var messages_key = req.body.messages_key || req.query.messages_key || req.params.messages_key || req.headers['messages_key'];
             var sqlselect = "SELECT `nickname` FROM `users` WHERE `key`!='" + users_key + "' AND `key` IN (SELECT `users_key` FROM `message_status` WHERE `messages_key`='" + messages_key + "' AND `status`=2)";
             client.query(sqlselect, function(eSelect, rSelect, fSelect) {

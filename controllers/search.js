@@ -41,6 +41,7 @@ router.get('/nickname=:nickname', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var request_uri = decodeURIComponent(req.params.nickname);
             var sqlu = "SELECT * FROM `users` WHERE `nickname` LIKE '%" + request_uri + "%' LIMIT 30";
             client.query(sqlu, function(errr, rsss, fiii) {
@@ -105,6 +106,7 @@ router.get('/email=:email', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var request_uri = decodeURIComponent(req.params.email);
             var sqlu = "SELECT * FROM `users` WHERE `email`='" + request_uri + "' LIMIT 1";
             client.query(sqlu, function(errr, rsss, fiii) {
@@ -153,6 +155,7 @@ router.get('/phone_number=:phone_number', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var calling_code = req.body.calling_code || req.query.calling_code || req.params.calling_code;
             calling_code = calling_code.replace(/\s/g, '');
             var sqlu = "SELECT * FROM `users` WHERE `key` IN (SELECT `users_key` FROM `other_information` WHERE `phone_number`='" + req.params.phone_number + "' AND `calling_code`='" + "+" + calling_code + "')  LIMIT 1";

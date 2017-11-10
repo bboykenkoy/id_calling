@@ -84,6 +84,7 @@ router.get('/type=received', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var page = req.params.page || req.query.page;
             var per_page = req.params.per_page || req.query.per_page;
             var sql = "SELECT `id`,`content`,`time` FROM `questions` WHERE `receiver_deleted`=0 AND `receiver_key`='" + key + "' ORDER BY `time` DESC LIMIT " + parseInt(per_page, 10) + " OFFSET " + parseInt(page, 10) * parseInt(per_page, 10) + "";
@@ -116,6 +117,7 @@ router.get('/type=sent', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var page = req.params.page || req.query.page;
             var per_page = req.params.per_page || req.query.per_page;
             var sql = "SELECT * FROM `questions` WHERE `sender_deleted`=0 AND `sender_key`='" + key + "' ORDER BY `time` DESC LIMIT " + parseInt(per_page, 10) + " OFFSET " + parseInt(page, 10) * parseInt(per_page, 10) + "";
@@ -234,6 +236,7 @@ router.post('/questions/delete', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var id = req.body.id;
             if (!req.body.id || !req.body.key) {
                 return res.sendStatus(300);
@@ -302,6 +305,7 @@ router.post('/answers/new', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var time = new Date().getTime();
             var content = escapeSQL.escape(decodeURIComponent(req.body.content));
             var sender_key = req.body.sender_key;

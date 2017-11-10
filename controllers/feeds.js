@@ -76,6 +76,7 @@ router.get('/type=wall', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + friend_key + "' AND `is_active`='1'";
             var orderBy = "ORDER BY `posted_time` DESC";
@@ -174,6 +175,7 @@ router.get('/type=albums', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var selectSQL;
 
@@ -253,6 +255,7 @@ router.get('/type=albumscount', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var friend_key = req.body.friend_key || req.query.friend_key || req.params.friend_key;
             var selectSQL;
             var currentUser = "SELECT `nickname`,`avatar` FROM `users` WHERE `key`='" + key + "'";
@@ -321,6 +324,7 @@ router.get('/type=mywall', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' AND `is_active`='1'";
             var tagsSQL = " OR `id` IN (SELECT `posts_id` FROM `tags` WHERE `users_key`='" + key + "')";
             var orderBy = "ORDER BY `posted_time` DESC";
@@ -422,6 +426,7 @@ router.get('/type=myalbums', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' AND `is_active`='1'";
             var haveImage = " AND `id` IN (SELECT `posts_id` FROM `store_images` WHERE `users_key`='" + key + "')";
             var tagsSQL = " OR `id` IN (SELECT `posts_id` FROM `tags` WHERE `users_key`='" + key + "')";
@@ -495,6 +500,7 @@ router.get('/type=avatar', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' AND `type`='avatar'";
             var orderBy = "ORDER BY `posted_time` DESC";
             client.query(selectSQL + orderBy, function(ePost, post, fPost) {
@@ -591,6 +597,7 @@ router.get('/type=cover', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' AND `type`='cover'";
             var orderBy = "ORDER BY `posted_time` DESC";
             client.query(selectSQL + orderBy, function(ePost, post, fPost) {
@@ -688,6 +695,7 @@ router.get('/type=myalbumscount', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' AND `is_active`='1'";
             var haveImage = " AND `id` IN (SELECT `posts_id` FROM `store_images` WHERE `users_key`='" + key + "')";
             var tagsSQL = " OR `id` IN (SELECT `posts_id` FROM `tags` WHERE `users_key`='" + key + "')";
@@ -732,6 +740,7 @@ router.get('/type=feeds', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var selectSQL = "SELECT * FROM `posts` WHERE `users_key`='" + key + "' OR `users_key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + key + "' AND `is_following`=1) AND `is_active`='1'";
             var tagsSQL = " OR `id` IN (SELECT `posts_id` FROM `tags` WHERE `users_key`='" + key + "')";
             var orderBy = "ORDER BY `posted_time` DESC";
@@ -832,6 +841,7 @@ router.get('/type=badge', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `notification_feed` INNER JOIN `notification_refresh` ON `notification_feed`.`users_key` = '" + key + "' AND `notification_feed`.`users_key` = notification_refresh.users_key AND `notification_feed`.`time` > `notification_refresh`.`time`";
             client.query(userSQL, function(error, data, fields) {
                 if (error) {

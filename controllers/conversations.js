@@ -55,6 +55,7 @@ router.post('/new', urlParser, function(req, res) {
                 } else {
                     var members = req.body.members;
                     delete req.body.members;
+                    delete req.body.access_token;
                     var sql = escapeSQL.format("INSERT INTO `conversations` SET ?", req.body);
                     BASE.insertWithSQL(sql, function(status) {
                         if (status) {
@@ -98,6 +99,7 @@ router.post('/update', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `conversations` WHERE `key`='" + req.body.key + "'";
             client.query(userSQL, function(error, data, fields) {
                 if (error) {
@@ -142,6 +144,7 @@ router.post('/type=add', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `conversations` WHERE `key`='" + req.body.key + "'";
             client.query(userSQL, function(error, data, fields) {
                 if (error) {
@@ -215,6 +218,7 @@ router.post('/type=remove', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var adminSQL = "SELECT `created_by` FROM `conversations` WHERE `key`='" + req.body.key + "'";
             client.query(adminSQL, function(eAdmin, dataAdmin, fieldAdmin) {
                 if (eAdmin) {
@@ -270,6 +274,7 @@ router.post('/type=leave', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var adminSQL = "SELECT `users_key` FROM `conversations` WHERE `key`='" + req.body.key + "'";
             client.query(adminSQL, function(eAdmin, dataAdmin, fieldAdmin) {
                 if (eAdmin) {
@@ -325,6 +330,7 @@ router.get('/type=countunread', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT `key` FROM conversations INNER JOIN members ON members.conversations_key = conversations.key AND members.users_key = '" + key + "' AND members.is_deleted='0'";
             client.query(userSQL, function(qError, qData, qFiels) {
                 if (qError) {
@@ -373,6 +379,7 @@ router.post('/settings', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var userSQL = "SELECT * FROM `members` WHERE `users_key`='" + req.body.users_key + "' AND `conversations_key`='" + req.body.conversations_key + "'";
             client.query(userSQL, function(error, data, fields) {
                 if (error) {
@@ -418,6 +425,7 @@ router.get('/:conversations_key/users_key=:key', function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            delete req.body.access_token;
             var sqlConver = "SELECT * FROM `conversations` WHERE `key`='" + req.params.conversations_key + "'";
             client.query(sqlConver, function(eConver, dConver, fConver) {
                 if (eConver) {
