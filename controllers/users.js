@@ -1416,6 +1416,7 @@ router.get('/:key/type=friendblock&access_token=:access_token', function(req, re
     if (key.length == 0) {
         return res.sendStatus(300);
     }
+    console.log(access_token);
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var userSQL = "SELECT " + BASE.baseSelectFriendSQL() + " FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `blocks` WHERE `users_key`='" + req.params.key + "')";
