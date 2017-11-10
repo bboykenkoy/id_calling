@@ -167,6 +167,9 @@ router.post('/signup', urlParser, function(req, res) {
                             currentTime = BASE.getRandomInt(1, 9) + "0" + currentTime;
                             client.query("UPDATE `users` SET `username`='" + currentTime + "' WHERE `email`='" + req.body.email + "'");
                         }
+                    } else {
+                        currentTime = BASE.getRandomInt(1, 9) + "0" + currentTime;
+                        client.query("UPDATE `users` SET `username`='" + currentTime + "' WHERE `email`='" + req.body.email + "'");
                     }
                     fillPointDate();
                     client.query("INSERT INTO `users_settings`(`users_key`) VALUES('" + req.body.key + "')");
