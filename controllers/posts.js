@@ -854,6 +854,7 @@ router.post('/like', urlParser, function(req, res) {
                                                                                 console.log(e);
                                                                                 return res.sendStatus(300);
                                                                             } else {
+                                                                                console.log(req.body.users_key + " thích " + req.body.posts_id + "");
                                                                                 return res.send(echoResponse(200, { total_like: d.length, liked: 1 }, 'success', false));
                                                                             }
                                                                         });
