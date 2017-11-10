@@ -66,6 +66,8 @@ var client = BASE.client();
 router.post('/new', urlParser, function(req, res) {
     var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
     var key = req.body.users_key || req.query.users_key || req.params.users_key;
+    console.log(access_token);
+    console.log(key);
     if (key.length == 0) {
         return res.sendStatus(300);
     }
