@@ -66,13 +66,14 @@ var client = BASE.client();
 router.post('/new', urlParser, function(req, res) {
     var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
     var key = req.body.users_key || req.query.users_key || req.params.users_key;
-    console.log(access_token);
-    console.log(key);
+    console.log("1");
     if (key.length == 0) {
+        console.log("2");
         return res.sendStatus(300);
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            console.log("3");
             var value = [];
             var insert = [];
             for (var k in req.body) {
@@ -113,6 +114,7 @@ router.post('/new', urlParser, function(req, res) {
                 }
             });
         } else {
+            console.log("4");
             return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
         }
     });
