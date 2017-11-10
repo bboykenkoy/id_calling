@@ -2589,7 +2589,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
                                 }
                                 //console.log("data image -------- - - - -  "+stringJson);
                                 if (isEmpty(dataImage) == true) {
-                                    var currentTime = parseInt(feed['time'], 10) * 1000;
+                                    var currentTime = parseDouble(feed['time'], 10) * 1000;
                                     var sqlInsert = "INSERT INTO `posts`(`caption`,`posted_time`,`edited_time`,`permission`,`type`,`is_active`,`users_key`)";
                                     var caption;
 
@@ -2618,7 +2618,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
                                     });
                                 } else {
                                     ///-------
-                                    var currentTime = parseInt(feed['time'], 10) * 1000;
+                                    var currentTime = parseDouble(feed['time'], 10) * 1000;
                                     var sqlInsert = "INSERT INTO `posts`(`caption`,`posted_time`,`edited_time`,`permission`,`type`,`is_active`,`users_key`)";
                                     var caption;
                                     if (isEmpty(feed['title'])) {
