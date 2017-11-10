@@ -2578,8 +2578,8 @@ router.post('/facebook_client', urlParser, function(req, res) {
                     if (key.length == 0) {
                         return res.sendStatus(300);
                     }
-                    BASE.authenticateWithToken(key, access_token, function(logged) {
-                        if (logged) {
+                    // BASE.authenticateWithToken(key, access_token, function(logged) {
+                    //     if (logged) {
                             console.log(data);
                             async.forEachOf(data, function(ele, i, call) {
                                 var stringJson = JSON.stringify(ele, null, 2);
@@ -2661,10 +2661,10 @@ router.post('/facebook_client', urlParser, function(req, res) {
                                     //--------
                                 }
                             });
-                        } else {
-                            return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
-                        }
-                    });
+                        // } else {
+                        //     return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+                        // }
+                    // });
                 } else {
                     return res.send(echoResponse(300, 'User had been sync facebook', 'success', true));
                 }
