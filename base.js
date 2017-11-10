@@ -159,40 +159,45 @@ module.exports = class Authenticate {
         });
     }
     authenticateWithToken(key, token, callback) {
-        var access_token = token.substring(5, token.length - 5);
-        if (isDecrypt(access_token) && typeof access_token == "string" && access_token && access_token.length > 0 && isJsonString(isDecrypt(access_token))) {
-            try {
-                var user = JSON.parse(decrypt(access_token));
-                var currentTime = new Date().getTime() / 1000;
-                if (user.expire_time && user.expire_time > currentTime) {
-                    if (user.key && user.key == key) {
-                        var sql = "SELECT * FROM `tokens` WHERE `access_token`='" + token + "' AND `users_key`='" + key + "'";
-                        client.query(sql, function(error, data, fields) {
-                            if (error) {
-                                console.log(error);
-                                callback(false);
-                            } else {
-                                if (data.length > 0) {
-                                    callback(true);
-                                } else {
+        if (typeof access_token == "string" && access_token && access_token.length > 0) {
+            var access_token = token.substring(5, token.length - 5);
+            if (isDecrypt(access_token) && isJsonString(isDecrypt(access_token))) {
+                try {
+                    var user = JSON.parse(decrypt(access_token));
+                    var currentTime = new Date().getTime() / 1000;
+                    if (user.expire_time && user.expire_time > currentTime) {
+                        if (user.key && user.key == key) {
+                            var sql = "SELECT * FROM `tokens` WHERE `access_token`='" + token + "' AND `users_key`='" + key + "'";
+                            client.query(sql, function(error, data, fields) {
+                                if (error) {
+                                    console.log(error);
                                     callback(false);
+                                } else {
+                                    if (data.length > 0) {
+                                        callback(true);
+                                    } else {
+                                        callback(false);
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        } else {
+                            callback(false);
+                        }
                     } else {
                         callback(false);
+                        client.query("DELETE FROM `tokens` WHERE `access_token`='" + access_token + "' AND `users_key`='" + key + "'");
                     }
-                } else {
+                } catch (e) {
                     callback(false);
-                    client.query("DELETE FROM `tokens` WHERE `access_token`='" + access_token + "' AND `users_key`='" + key + "'");
                 }
-            } catch (e) {
+            } else {
                 callback(false);
             }
         } else {
             callback(false);
         }
     }
+    
     getFriendByKey(key, callback) {
         var sqlSelect = "SELECT `key`, `email`, `username`, `nickname`, `created_at`, `avatar`, `cover`, `sex`, `birthday`, `last_active`, `latitude`, `longitude`, `status`, `facebook_point`, `country`, `city`, `img_width`, `img_height`, `is_active`";
         var sqlWhere = " FROM `users` WHERE `key`='" + key + "'";
