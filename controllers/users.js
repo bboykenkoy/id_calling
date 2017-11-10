@@ -552,6 +552,7 @@ router.post('/other_information', urlParser, function(req, res) {
             }
             delete req.body.email;
             delete req.body.key;
+            delete req.body.access_token;
             BASE.getObjectWithSQL(userSQL, function(data) {
                 if (data) {
                     var sqlUpdate = escapeSQL.format("UPDATE `other_information` SET ? WHERE `users_key`= ?", [req.body, key]);
