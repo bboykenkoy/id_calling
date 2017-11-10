@@ -731,7 +731,7 @@ router.post('/update', urlParser, function(req, res) {
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var userSQL = "SELECT * FROM `users` WHERE `key`='" + key + "'";
-            BASE.getObjectWithSQL(data, function(data) {
+            BASE.getObjectWithSQL(userSQL, function(data) {
                 if (data) {
                     delete req.body.access_token;
                     delete req.body.key;
