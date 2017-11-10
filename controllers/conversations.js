@@ -42,63 +42,42 @@ var client = BASE.client();
 /*********--------NEW CONVERSATION----------*********/
 router.post('/new', urlParser, function(req, res) {
     var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
-    var key = req.body.key || req.query.key || req.params.key;
+    var key = req.body.users_key || req.query.users_key || req.params.users_key;
     if (key.length == 0) {
         return res.sendStatus(300);
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
             var userSQL = "SELECT * FROM `conversations` WHERE `key`='" + req.body.key + "'";
-            client.query(userSQL, function(error, data, fields) {
-                if (error) {
-                    console.log(error);
-                    return res.sendStatus(300);
+            BASE.getObjectWithSQL(userSQL, function(data) {
+                if (data) {
+                    return res.send(echoResponse(404, 'This conversation already exists', 'success', true));
                 } else {
-                    if (data.length > 0) {
-                        return res.send(echoResponse(404, 'This conversation already exists', 'success', true));
-                    } else {
-                        if (!req.body.members) {
-                            return res.send(echoResponse(300, 'Need members in conversation.', 'success', true));
-                        }
-                        var value = [];
-                        var insert = [];
-                        for (var k in req.body) {
-                            if (k != 'access_token' & k != 'members' && k != 'last_message' && k != 'last_name_update') {
-                                insert.push("`" + k + "`");
-                                value.push("'" + req.body[k] + "'");
-                            }
-                        }
-                        var insertSQL = "INSERT INTO `conversations`(" + insert.toString() + ",`last_message`,`last_name_update`) VALUES(" + value.toString() + "," + escapeSQL.escape(req.body.last_message) + "," + escapeSQL.escape(req.body.last_name_update) + ")";
-                        client.query(insertSQL, function(eInsert, dInsert, fInsert) {
-                            if (eInsert) {
-                                console.log(eInsert);
-                                return res.sendStatus(300);
-                            } else {
-                                console.log("Vừa thêm conversation thành công với key " + req.body.key);
-                                var json;
-                                if (isJsonString(req.body.members)) {
-                                    json = JSON.parse(req.body.members);
-                                    for (var n = 0; n < json.length; n++) {
-                                        console.log(json[n].user_id);
-                                        var insertMember = "INSERT INTO `members`(`users_key`,`conversations_key`)";
-                                        var dataMember = "VALUES ('" + json[n].user_id + "','" + req.body.key + "')";
-                                        client.query(insertMember + dataMember, function(eMember, rMember, fMember) {
-                                            if (eMember) {
-                                                console.log(eMember);
-                                                return res.sendStatus(300);
-                                            } else {
-                                                console.log("INSERT members SUCCESS");
-                                            }
-                                        });
-                                    }
-                                    return res.send(echoResponse(200, 'Created conversation successfully.', 'success', false));
-                                } else {
-                                    return res.send(echoResponse(404, 'Members error JSON string.', 'success', false));
+                    var members = req.body.members;
+                    delete req.body.members;
+                    var sql = escapeSQL.format("INSERT INTO `conversations` SET ?", req.body);
+                    BASE.insertWithSQL(sql, function(status) {
+                        if (status) {
+                            console.log("Vừa thêm conversation thành công với key " + req.body.key);
+                            var json;
+                            if (isJsonString(req.body.members)) {
+                                json = JSON.parse(req.body.members);
+                                for (var n = 0; n < json.length; n++) {
+                                    console.log(json[n].user_id);
+                                    var iMSQL = "INSERT INTO `members`(`users_key`,`conversations_key`)";
+                                    var dMSQL = "VALUES ('" + json[n].user_id + "','" + req.body.key + "')";
+                                    BASE.insertWithSQL(iMSQL+dMSQL, function(stt){
+                                        console.log("INSERT members SUCCESS");
+                                    });
                                 }
-
+                                return res.send(echoResponse(200, 'Created conversation successfully.', 'success', false));
+                            } else {
+                                return res.send(echoResponse(404, 'Members error JSON string.', 'success', false));
                             }
-                        });
-                    }
+                        } else {
+                            return res.send(echoResponse(404, 'Create failed.', 'success', true));
+                        }
+                    });
                 }
             });
         } else {
