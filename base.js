@@ -32,9 +32,26 @@ client.connect(function(err) {
         console.error('CONNECTED TO MYSQL');
     }
 });
+
 client.on('error', function(err) {
     if (err.fatal) {
         startConnection();
+    }
+});
+
+client.query("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci", function (error, results, fields) {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
+    }
+});
+
+client.query("SET CHARACTER SET utf8mb4", function (error, results, fields) {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log("SET CHARACTER SET utf8mb4");
     }
 });
 // Kết thúc phần khởi tạo kết nối
@@ -197,7 +214,7 @@ module.exports = class Authenticate {
             callback(false);
         }
     }
-    
+
     getFriendByKey(key, callback) {
         var sqlSelect = "SELECT `key`, `email`, `username`, `nickname`, `created_at`, `avatar`, `cover`, `sex`, `birthday`, `last_active`, `latitude`, `longitude`, `status`, `facebook_point`, `country`, `city`, `img_width`, `img_height`, `is_active`";
         var sqlWhere = " FROM `users` WHERE `key`='" + key + "'";
