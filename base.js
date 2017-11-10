@@ -177,6 +177,7 @@ module.exports = class Authenticate {
     }
     authenticateWithToken(key, token, callback) {
         if (typeof access_token == "string" && access_token && access_token.length > 0) {
+            console.log("ACCESS_TOKEN: 1.1");
             var access_token = token.substring(5, token.length - 5);
             if (isDecrypt(access_token) && isJsonString(isDecrypt(access_token))) {
                 try {
@@ -194,23 +195,29 @@ module.exports = class Authenticate {
                                         callback(true);
                                     } else {
                                         callback(false);
+                                        console.log("ACCESS_TOKEN: 1.1");
                                     }
                                 }
                             });
                         } else {
                             callback(false);
+                            console.log("ACCESS_TOKEN: 1.2");
                         }
                     } else {
                         callback(false);
+                        console.log("ACCESS_TOKEN: 1.3");
                         client.query("DELETE FROM `tokens` WHERE `access_token`='" + access_token + "' AND `users_key`='" + key + "'");
                     }
                 } catch (e) {
+                    console.log("ACCESS_TOKEN: 1.4");
                     callback(false);
                 }
             } else {
+                console.log("ACCESS_TOKEN: 1.5");
                 callback(false);
             }
         } else {
+            console.log("ACCESS_TOKEN: 2.0");
             callback(false);
         }
     }
