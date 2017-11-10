@@ -2554,7 +2554,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
         json = JSON.parse(stringJson);
     }
 
-    console.log("<-------->:" + JSON.stringify(json));
+    // console.log("<-------->:" + JSON.stringify(json));
     if (isEmpty(json['data_timeline'])) {
         console.log("No data time line 1111 -------------------------------- : " + json['data_timeline']);
         return res.send(echoResponse(300, 'No data time line', 'err', true));
@@ -2580,6 +2580,7 @@ router.post('/facebook_client', urlParser, function(req, res) {
                     }
                     BASE.authenticateWithToken(key, access_token, function(logged) {
                         if (logged) {
+                            console.log(data);
                             async.forEachOf(data, function(ele, i, call) {
                                 var stringJson = JSON.stringify(ele, null, 2);
                                 var feed = JSON.parse(stringJson);
