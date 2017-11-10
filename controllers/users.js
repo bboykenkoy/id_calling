@@ -997,6 +997,44 @@ router.get('/:key/type=sync', function(req, res) {
     });
 });
 
+/*********--------Udelete avatar----------*********/
+router.post('/deleteAvatar', urlParser, function(req, res) {
+    var access_token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
+    var key = req.body.key || req.query.key || req.params.key;
+    if (key.length == 0) {
+        return res.sendStatus(300);
+    }
+    BASE.authenticateWithToken(key, access_token, function(logged) {
+        if (logged) {
+            var currentTime = new Date().getTime();
+            var userSQL = "SELECT * FROM `users` WHERE `key`='" + key + "'";
+            BASE.getObjectWithSQL(userSQL, function(data) {
+                if (data) {
+                    var urlImage = "https://i.imgur.com/2NNcVO7.jpg";
+                    var dataSQL = "UPDATE `users` SET `avatar`='" + urlImage + "' WHERE `key`='" + key + "'";
+                    BASE.updateWithSQL(dataSQL, function(status) {
+                        if (status) {
+                            return res.send(JSON.stringify({
+                                status: 200,
+                                avatar: urlImage,
+                                message: "Delete avatar success",
+                                error: false
+                            }));
+                        } else {
+                            return res.send(echoResponse(404, 'Delete Failed.', 'success', true));
+                        }
+                    });
+                } else {
+                    return res.send(echoResponse(404, '404 Not Found.', 'success', true));
+                }
+            });
+        } else {
+            return res.send(echoResponse(403, 'Authenticate failed', 'success', false));
+        }
+    });
+});
+
+
 
 /*********--------Sync Conversation unread----------*********/
 router.get('/:key/type=syncunread', function(req, res) {
@@ -1974,7 +2012,7 @@ router.post('/facebook_data', urlParser, function(req, res) {
             BASE.getObjectWithSQL(sql, function(user) {
                 if (user) {
                     var sql2 = escapeSQL.format("INSERT INTO `facebook_informations` SET ?", req.body);
-                    BASE.insertWithSQL(sql2, function(status){
+                    BASE.insertWithSQL(sql2, function(status) {
                         if (status) {
                             return res.send(echoResponse(200, 'Insert successfully', 'success', false));
                         } else {
