@@ -867,7 +867,11 @@ router.get('/:key/type=friendinfo', function(req, res) {
                                 BASE.isFollowing(key, friend_key, function(isFollowing) {
                                     var sql2 = "SELECT * FROM `users` WHERE `key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + friend_key + "' AND `friend_key` IN (SELECT `friend_key` FROM `contacts` WHERE `users_key`='" + key + "'))";
                                     BASE.getObjectWithSQL(sql2, function(contact2) {
-                                        data.mutual_friend = contact2.length;
+                                        if (contact2) {
+                                            data.mutual_friend = contact2.length;
+                                        } else {
+                                            data.mutual_friend = 0;
+                                        }
                                         data.relation_ship = ketqua;
                                         data.is_following = isFollowing;
                                         var array = [];
