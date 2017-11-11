@@ -14,11 +14,6 @@ var moment = require('moment-timezone');
 var urlParser = bodyParser.urlencoded({ extended: false });
 // parse application/json
 router.use(bodyParser.json());
-var apn = require('apn');
-var apnService = new apn.Provider({
-    cert: "certificates/cert.pem",
-    key: "certificates/key.pem",
-});
 var nodemailer = require('nodemailer');
 let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -34,6 +29,14 @@ var FCM = require('fcm-push');
 var serverKey = config.android;
 var collapse_key = 'com.android.abc';
 var fcm = new FCM(serverKey);
+// 
+var apn = require('apn');
+var apnService = new apn.Provider({
+    cert: "certificates/cert.pem",
+    key: "certificates/key.pem",
+});
+
+
 var avatarApp = "http://i.imgur.com/rt1NU2t.png";
 
 /*********--------------------------*********

@@ -195,25 +195,25 @@ module.exports = class Authenticate {
                                         callback(true);
                                     } else {
                                         callback(false);
-                                        console.log("ACCESS_TOKEN: 1.1");
+                                        console.log("ACCESS_TOKEN: 1.11");
                                     }
                                 }
                             });
                         } else {
                             callback(false);
-                            console.log("ACCESS_TOKEN: 1.2");
+                            console.log("ACCESS_TOKEN: 1.22");
                         }
                     } else {
                         callback(false);
-                        console.log("ACCESS_TOKEN: 1.3");
+                        console.log("ACCESS_TOKEN: 1.33");
                         client.query("DELETE FROM `tokens` WHERE `access_token`='" + access_token + "' AND `users_key`='" + key + "'");
                     }
                 } catch (e) {
-                    console.log("ACCESS_TOKEN: 1.4");
+                    console.log("ACCESS_TOKEN: 1.44");
                     callback(false);
                 }
             } else {
-                console.log("ACCESS_TOKEN: 1.5");
+                console.log("ACCESS_TOKEN: 1.55");
                 callback(false);
             }
         } else {
