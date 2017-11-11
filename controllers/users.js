@@ -1571,6 +1571,7 @@ router.post('/request', urlParser, function(req, res) {
         if (logged) {
             delete req.body.access_token;
             var isFriendSQL = "SELECT * FROM `contacts` WHERE `friend_key`='" + key + "' AND `users_key`='" + req.body.friend_key + "' OR `friend_key`='" + req.body.friend_key + "' AND `users_key`='" + key + "'";
+            console.log(JSON.stringify(req.body));
             BASE.getObjectWithSQL(isFriendSQL, function(data) {
                 if (data) {
                     return res.send(echoResponse(404, 'This user was your friends.', 'success', true));
