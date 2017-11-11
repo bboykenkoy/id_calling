@@ -289,7 +289,7 @@ router.post('/type=params', urlParser, function(req, res) {
             console.log(JSON.stringify(req.body));
             var per_pageNan;
             if(isNaN(parseInt(page, 10) * parseInt(per_page, 10))){
-                per_pageNan = 10;
+                per_pageNan = 0;
             } else {
                 per_pageNan = parseInt(page, 10) * parseInt(per_page, 10);
             }
