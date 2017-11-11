@@ -181,38 +181,38 @@ module.exports = class Authenticate {
         if (typeof token == "string" && token && token.length > 0) {
             console.log("ACCESS_TOKEN: 1.0");
             var access_token = token.substring(5, token.length - 5);
-            if (isDecrypt(access_token) && isJsonString(isDecrypt(access_token))) {
-                try {
-                    var user = JSON.parse(decrypt(access_token));
-                    var currentTime = new Date().getTime() / 1000;
-                    var sql = "SELECT * FROM `tokens` WHERE `access_token`='" + token + "' AND `users_key`='" + key + "'";
-                    client.query(sql, function(error, data, fields) {
-                        if (error) {
-                            console.log(error);
-                            callback(false);
-                        } else {
-                            if (data.length > 0) {
-                                if (data[0].expire_time > currentTime) {
-                                    callback(true);
-                                } else {
-                                    callback(false);
-                                    console.log("ACCESS_TOKEN: 1.11");
-                                    client.query("DELETE FROM `tokens` WHERE `access_token`='" + access_token + "' AND `users_key`='" + key + "'");
-                                }
-                            } else {
-                                callback(false);
-                                console.log("ACCESS_TOKEN: 1.22");
-                            }
-                        }
-                    });
-                } catch (e) {
-                    console.log("ACCESS_TOKEN: 1.44");
+            // if (isDecrypt(access_token) && isJsonString(isDecrypt(access_token))) {
+            //     try {
+            //         var user = JSON.parse(decrypt(access_token));
+            var currentTime = new Date().getTime() / 1000;
+            var sql = "SELECT * FROM `tokens` WHERE `access_token`='" + token + "' AND `users_key`='" + key + "'";
+            client.query(sql, function(error, data, fields) {
+                if (error) {
+                    console.log(error);
                     callback(false);
+                } else {
+                    if (data.length > 0) {
+                        if (data[0].expire_time > currentTime) {
+                            callback(true);
+                        } else {
+                            callback(false);
+                            console.log("ACCESS_TOKEN: 1.11");
+                            client.query("DELETE FROM `tokens` WHERE `access_token`='" + access_token + "' AND `users_key`='" + key + "'");
+                        }
+                    } else {
+                        callback(false);
+                        console.log("ACCESS_TOKEN: 1.22");
+                    }
                 }
-            } else {
-                console.log("ACCESS_TOKEN: 1.55");
-                callback(false);
-            }
+            });
+            //     } catch (e) {
+            //         console.log("ACCESS_TOKEN: 1.44");
+            //         callback(false);
+            //     }
+            // } else {
+            //     console.log("ACCESS_TOKEN: 1.55");
+            //     callback(false);
+            // }
         } else {
             console.log("ACCESS_TOKEN: 2.0");
             callback(false);
