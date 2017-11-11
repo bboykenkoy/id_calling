@@ -1569,9 +1569,9 @@ router.post('/request', urlParser, function(req, res) {
     }
     BASE.authenticateWithToken(key, access_token, function(logged) {
         if (logged) {
+            console.log(JSON.stringify(req.body));
             delete req.body.access_token;
             var isFriendSQL = "SELECT * FROM `contacts` WHERE `friend_key`='" + key + "' AND `users_key`='" + req.body.friend_key + "' OR `friend_key`='" + req.body.friend_key + "' AND `users_key`='" + key + "'";
-            console.log(JSON.stringify(req.body));
             BASE.getObjectWithSQL(isFriendSQL, function(data) {
                 if (data) {
                     return res.send(echoResponse(404, 'This user was your friends.', 'success', true));
