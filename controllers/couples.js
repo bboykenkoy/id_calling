@@ -287,7 +287,13 @@ router.post('/type=params', urlParser, function(req, res) {
             }
 
             console.log(JSON.stringify(req.body));
-            var orderby = "LIMIT " + parseInt(per_page, 10) + " OFFSET " + parseInt(page, 10) * parseInt(per_page, 10);
+            var per_pageNan = 0;
+            if(isNaN(parseInt(page, 10) * parseInt(per_page, 10))){
+                per_pageNan = 10;
+            } else {
+                per_pageNan = parseInt(page, 10) * parseInt(per_page, 10);
+            }
+            var orderby = "LIMIT " + parseInt(per_page, 10) + " OFFSET " + per_pageNan;
             var sqlu = sqlsselect + dk2 + dk3 + dk4 + dkbanbe + dkSetting + dk5 + param1 + param2 + param3 + param4 + param5 + param6 + param7 + param8 + param9 + param10 + param11 + param12 + param13 + param14 + param15 + orderby;
             console.log(sqlu);
             client.query(sqlu, function(errr, rsss, fiii) {
