@@ -180,7 +180,7 @@ module.exports = class Authenticate {
     authenticateWithToken(key, token, callback) {
         if (typeof token == "string" && token && token.length > 0) {
             console.log("ACCESS_TOKEN: 1.0");
-            var access_token = token.substring(5, token.length - 5);
+            // var access_token = token.substring(5, token.length - 5);
             // if (isDecrypt(access_token) && isJsonString(isDecrypt(access_token))) {
             //     try {
             //         var user = JSON.parse(decrypt(access_token));
@@ -197,7 +197,7 @@ module.exports = class Authenticate {
                         } else {
                             callback(false);
                             console.log("ACCESS_TOKEN: 1.11");
-                            client.query("DELETE FROM `tokens` WHERE `access_token`='" + access_token + "' AND `users_key`='" + key + "'");
+                            client.query("DELETE FROM `tokens` WHERE `access_token`='" + token + "' AND `users_key`='" + key + "'");
                         }
                     } else {
                         callback(false);
