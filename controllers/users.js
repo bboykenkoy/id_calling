@@ -24,6 +24,17 @@ var urlParser = BASE.urlParser();
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------*/
+//-- FCM
+var FCM = require('fcm-push');
+var serverKey = config.android;
+var collapse_key = 'com.android.abc';
+var fcm = new FCM(serverKey);
+// 
+var apn = require('apn');
+var apnService = new apn.Provider({
+    cert: "certificates/cert.pem",
+    key: "certificates/key.pem",
+});
 
 /*********--------SIGNIN----------*********/
 router.post('/signin', urlParser, function(req, res) {
