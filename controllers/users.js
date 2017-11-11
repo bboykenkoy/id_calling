@@ -1174,7 +1174,15 @@ router.get('/:key/type=findnearby', function(req, res) {
             var userSQL10 = "AND `key` NOT IN (SELECT `friend_key` FROM `blocks` WHERE `users_key`='" + key + "') AND `key` NOT IN (SELECT `users_key` FROM `blocks` WHERE `friend_key`='" + key + "')";
             var userSQL7 = "AND `key`!='" + key + "'";
             var userSQL9 = " AND ROUND(111.045* DEGREES(ACOS(COS(RADIANS(your_latitude)) * COS(RADIANS(latitude)) * COS(RADIANS(your_longitude) - RADIANS(longitude)) + SIN(RADIANS(your_latitude)) * SIN(RADIANS(latitude)))),2) <= " + parseInt(distance, 10) + " ORDER BY distance";
-            var pp = " LIMIT " + parseInt(per_page, 10) + " OFFSET " + parseInt(page, 10) * parseInt(per_page, 10) + "";
+            
+            var per_pageNan;
+            if(isNaN(parseInt(page, 10) * parseInt(per_page, 10))){
+                per_pageNan = 0;
+            } else {
+                per_pageNan = parseInt(page, 10) * parseInt(per_page, 10);
+            }
+
+            var pp = " LIMIT " + parseInt(per_page, 10) + " OFFSET " + per_pageNan + "";
 
             var finalSQL;
             var array = [];
