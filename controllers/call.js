@@ -113,188 +113,193 @@ var client = BASE.client();
 module.exports = class CallManager {
 
 
-    socketEventMatchCall(user,callback){
+    socketEventMatchCall(user, callback) {
 
-            if (user.type == 'leave') {
-                // let msg = {message:"user not found",result: 0, type: "result"};
-              //  socket.emit('calling', msg);
-               let msg =  {key:user.key, message:"user leave", result: 0, type: "result"};
-                client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
-                console.log(msg);
-                callback(msg,true);
-            }
+        if (user.type == 'leave') {
+            // let msg = {message:"user not found",result: 0, type: "result"};
+            //  socket.emit('calling', msg);
+            let msg = { key: user.key, message: "user leave", result: 0, type: "result" };
+            client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
+            console.log(msg);
+            callback(msg, true);
+        } else if (user && user.type == 'search') {
 
-            else if (user && user.type == 'connect') {
+            console.log("request from calling " + user.key);
 
-                console.log("request from calling " + user.key);
+            var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
+            client.query(sqlCheckExit, function(e, d, f) {
+                if (e) {
+                    console.log(e);
+                } else {
+                    var query;
+                    if (d.length > 0) {
+                        query = "UPDATE `calling` SET `is_calling`=0,`country_code` ='" + user.country_code + "',`gender` = '" + user.gender + "' WHERE `users_key`='" + user.key + "'";
 
-                var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
-                client.query(sqlCheckExit, function(e, d, f) {
-                    if (e) {
-                        console.log(e);
                     } else {
-                        var query;
-                        if (d.length > 0) {
-                            query = "UPDATE `calling` SET `is_calling`=0 WHERE `users_key`='" + user.key + "'";
-                           
-                        } else {
-                            query = "INSERT INTO `calling` SET `users_key`='" + user.key + "'";
-                        }
+                        query = "INSERT INTO `calling` SET `users_key`=',`country_code` ='" + user.country_code + "',`gender` = '" + user.gender + "'" + user.key + "'";
+                    }
 
-                         client.query(query,function(err,d,f){
-                            
-                                 var sqlUser = "SELECT * FROM `users` WHERE `key`='" + user.key + "'";
-                              client.query(sqlUser, function(err, dt, fl) {
-                                         if (err) {
-                                            console.log(err);
-                                            let msg =  {key:user.key, message:"user not found", result: 0, type: "result"};
-                                            callback(msg,false);
+                    client.query(query, function(err, d, f) {
+
+                        var sqlUser = "SELECT * FROM `users` WHERE `key`='" + user.key + "'";
+
+                        client.query(sqlUser, function(err, dt, fl) {
+                            if (err) {
+                                console.log(err);
+                                let msg = { key: user.key, message: "user not found", result: 0, type: "result" };
+                                callback(msg, false);
+                            } else {
+
+                                if (dt.length > 0) {
+                                    
+                                    var optionParam = " AND `country_code` = '" + user.country_code + "' AND `gender` = '"+ user.gender +"' ";
+                                    if (user.gender == '0') {
+                                        optionParam = " AND `country_code` = '" + user.country_code + "' ";
+                                    }
+
+                                    // if (user.country_code) {}
+
+                                    var sqlDataArray = "SELECT * FROM `users` WHERE `key` IN (SELECT `users_key` FROM `calling` WHERE `is_calling`=0 AND `users_key`!='" + user.key + "' " + optionParam + ") ORDER BY RAND() LIMIT 1";
+                                    client.query(sqlDataArray, function(error, data, fields) {
+                                        if (error) {
+                                            console.log(error);
+                                            let msg = { key: user.key, message: "user not found", result: 0, type: "result" };
+                                            callback(msg, false);
                                         } else {
-                                        
-                                             if (dt.length > 0) {
-                                                  var sqlDataArray = "SELECT * FROM `users` WHERE `key` IN (SELECT `users_key` FROM `calling` WHERE `is_calling`=0 AND `users_key`!='" + user.key + "') ORDER BY RAND() LIMIT 1";
-                                                 client.query(sqlDataArray, function(error, data, fields) {
-                                                        if (error) {
-                                                            console.log(error);
-                                                             let msg =  {key:user.key, message:"user not found", result: 0, type: "result"};
-                                                             callback(msg,false);
-                                                        } else {
-                                                            if (data.length > 0) { 
-                                                                var friendKey =  data[0].key;
-                                                                var sqlUpdate = "UPDATE `calling` SET `is_calling` = '1' WHERE `users_key` = '"+user.key+"' OR `users_key` = '"+friendKey+"'";
-                                                                client.query(sqlUpdate,function(err,result,field){
-                                                                    
-                                                                       let msg =  { key: user.key, friend: data[0], result: 1, type: "result"};
-                                                
-                                                                        console.log(msg);
+                                            if (data.length > 0) {
+                                                var friendKey = data[0].key;
+                                                var sqlUpdate = "UPDATE `calling` SET `is_calling` = '1' WHERE `users_key` = '" + user.key + "' OR `users_key` = '" + friendKey + "'";
+                                                client.query(sqlUpdate, function(err, result, field) {
 
-                                                                        callback(msg,false);
-                                                                });
-                                                           
-                                                                // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
-                                                            } else {
-                                                                let msg =  {key:user.key, message:"user not found", result: 0, type: "result"};
-                                                                callback(msg,false); 
-                                                            }
-                                                        }
-                                            });
-                        }else{
-                            
-                            let msg = {message:"user not found",result: 0, type: "result"};
-                            //socket.emit('calling', msg);
-                            console.log(msg);
-                            callback(msg,false);
-                            // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
-                            
-                        }
-                    }
-                });
-                         });
-                        console.log("Update is_calling " + user.key);
-                    }
-                });
-     
-            } else {
-                let msg = {message:"user not found",result: 0, type: "result"};
-                //socket.emit('calling', msg);
-                callback(msg,false);
-                client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
-                console.log(msg);
-            }
+                                                    let msg = { key: user.key, friend: data[0], result: 1, type: "result" };
+
+                                                    console.log(msg);
+
+                                                    callback(msg, false);
+                                                });
+
+                                                // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
+                                            } else {
+                                                let msg = { key: user.key, message: "user not found", result: 0, type: "result" };
+                                                callback(msg, false);
+                                            }
+                                        }
+                                    });
+                                } else {
+
+                                    let msg = { message: "user not found", result: 0, type: "result" };
+                                    //socket.emit('calling', msg);
+                                    console.log(msg);
+                                    callback(msg, false);
+                                    // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
+
+                                }
+                            }
+                        });
+                    });
+                    console.log("Update is_calling " + user.key);
+                }
+            });
+
+        } else {
+            let msg = { message: "user not found", result: 0, type: "result" };
+            //socket.emit('calling', msg);
+            callback(msg, false);
+            client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
+            console.log(msg);
+        }
 
     }
 
 
     /*Call signle with friend*/
-    socketEventMatching(user,callback){
+    socketEventMatching(user, callback) {
 
-            if (user.type == 'leave') {
-                // let msg = {message:"user not found",result: 0, type: "result"};
-              //  socket.emit('calling', msg);
-               let msg =  {key:user.key, message:"user leave", result: 0, type: "result"};
-                client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
-                console.log(msg);
-                callback(msg,true);
-            }
+        if (user.type == 'leave') {
+            // let msg = {message:"user not found",result: 0, type: "result"};
+            //  socket.emit('calling', msg);
+            let msg = { key: user.key, message: "user leave", result: 0, type: "result" };
+            client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
+            console.log(msg);
+            callback(msg, true);
+        } else if (user && user.type == 'connect') {
 
-            else if (user && user.type == 'connect') {
+            console.log("request from calling " + user.key);
 
-                console.log("request from calling " + user.key);
+            var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
+            client.query(sqlCheckExit, function(e, d, f) {
+                if (e) {
+                    console.log(e);
+                } else {
+                    var query;
+                    if (d.length > 0) {
+                        query = "UPDATE `calling` SET `is_calling`=0 WHERE `users_key`='" + user.key + "'";
 
-                var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
-                client.query(sqlCheckExit, function(e, d, f) {
-                    if (e) {
-                        console.log(e);
                     } else {
-                        var query;
-                        if (d.length > 0) {
-                            query = "UPDATE `calling` SET `is_calling`=0 WHERE `users_key`='" + user.key + "'";
-                           
-                        } else {
-                            query = "INSERT INTO `calling` SET `users_key`='" + user.key + "'";
-                        }
+                        query = "INSERT INTO `calling` SET `users_key`='" + user.key + "'";
+                    }
 
-                         client.query(query,function(err,d,f){
-                            
-                                 var sqlUser = "SELECT * FROM `users` WHERE `key`='" + user.key + "'";
-                              client.query(sqlUser, function(err, dt, fl) {
-                                         if (err) {
-                                            console.log(err);
-                                            let msg =  {key:user.key, message:"user not found", result: 0, type: "result"};
-                                            callback(msg,false);
+                    client.query(query, function(err, d, f) {
+
+                        var sqlUser = "SELECT * FROM `users` WHERE `key`='" + user.key + "'";
+                        client.query(sqlUser, function(err, dt, fl) {
+                            if (err) {
+                                console.log(err);
+                                let msg = { key: user.key, message: "user not found", result: 0, type: "result" };
+                                callback(msg, false);
+                            } else {
+
+                                if (dt.length > 0) {
+                                    //`is_calling`=0 AND
+                                    var sqlDataArray = "SELECT * FROM `users` WHERE `key` IN (SELECT `users_key` FROM `calling` WHERE  `users_key`!='" + user.key + "') ORDER BY RAND() LIMIT 1";
+                                    client.query(sqlDataArray, function(error, data, fields) {
+                                        if (error) {
+                                            console.log(error);
+                                            let msg = { key: user.key, message: "user not found", result: 0, type: "result" };
+                                            callback(msg, false);
                                         } else {
-                                        
-                                             if (dt.length > 0) {
-                                                //`is_calling`=0 AND
-                                                  var sqlDataArray = "SELECT * FROM `users` WHERE `key` IN (SELECT `users_key` FROM `calling` WHERE  `users_key`!='" + user.key + "') ORDER BY RAND() LIMIT 1";
-                                                 client.query(sqlDataArray, function(error, data, fields) {
-                                                        if (error) {
-                                                            console.log(error);
-                                                             let msg =  {key:user.key, message:"user not found", result: 0, type: "result"};
-                                                             callback(msg,false);
-                                                        } else {
-                                                            if (data.length > 0) { 
-                                                                var friendKey =  data[0].key;
-                                                                var sqlUpdate = "UPDATE `calling` SET `is_calling` = '1' WHERE `users_key` = '"+user.key+"' OR `users_key` = '"+friendKey+"'";
-                                                                client.query(sqlUpdate,function(err,result,field){
-                                                                    
-                                                                       let msg =  { key: user.key, friend: data[0], result: 1, type: "result"};
-                                                
-                                                                        console.log(msg);
+                                            if (data.length > 0) {
+                                                var friendKey = data[0].key;
+                                                var sqlUpdate = "UPDATE `calling` SET `is_calling` = '1' WHERE `users_key` = '" + user.key + "' OR `users_key` = '" + friendKey + "'";
+                                                client.query(sqlUpdate, function(err, result, field) {
 
-                                                                        callback(msg,false);
-                                                                });
-                                                           
-                                                                // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
-                                                            } else {
-                                                                let msg =  {key:user.key, message:"user not found", result: 0, type: "result"};
-                                                                callback(msg,false); 
-                                                            }
-                                                        }
-                                            });
-                        }else{
-                            
-                            let msg = {message:"user not found",result: 0, type: "result"};
-                            //socket.emit('calling', msg);
-                            console.log(msg);
-                            callback(msg,false);
-                            // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
-                            
-                        }
-                    }
-                });
-                         });
-                        console.log("Update is_calling " + user.key);
-                    }
-                });
-     
-            } else {
-                let msg = {message:"user not found",result: 0, type: "result"};
-                //socket.emit('calling', msg);
-                callback(msg,false);
-                client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
-                console.log(msg);
-            }
+                                                    let msg = { key: user.key, friend: data[0], result: 1, type: "result" };
+
+                                                    console.log(msg);
+
+                                                    callback(msg, false);
+                                                });
+
+                                                // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
+                                            } else {
+                                                let msg = { key: user.key, message: "user not found", result: 0, type: "result" };
+                                                callback(msg, false);
+                                            }
+                                        }
+                                    });
+                                } else {
+
+                                    let msg = { message: "user not found", result: 0, type: "result" };
+                                    //socket.emit('calling', msg);
+                                    console.log(msg);
+                                    callback(msg, false);
+                                    // socket.broadcast.emit('K_Signal_Call', {message:"user not found",result: 0, type: "result"});
+
+                                }
+                            }
+                        });
+                    });
+                    console.log("Update is_calling " + user.key);
+                }
+            });
+
+        } else {
+            let msg = { message: "user not found", result: 0, type: "result" };
+            //socket.emit('calling', msg);
+            callback(msg, false);
+            client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
+            console.log(msg);
+        }
 
     }
 
