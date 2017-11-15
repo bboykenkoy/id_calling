@@ -86,14 +86,14 @@ var client = BASE.client();
 var urlParser = BASE.urlParser();
 /**********---------------------------*********
  **********------- FUNCTION ----------*********
- **********---------------------------*********/ 
+ **********---------------------------*********/
 var call = require('./controllers/call.js');
 var callManager = new call();
 
 io.on('connection', function(socket) { // Incoming connections from clients
     var peer;
     socket.on('online', function(user) {
-        
+
         if (findUserByUID(user.key) == null) {
             var usr = { id: user.key, key: user.key, socketid: socket.id };
             users.push(usr);
@@ -149,33 +149,34 @@ io.on('connection', function(socket) { // Incoming connections from clients
         }
     });
     socket.on('calling', function(user) {
- 
-        callManager.socketEventMatchCall(user,function(msg,isLeave){
+
+        console.log("Calling from : " + JSON.stringify(user));
+        callManager.socketEventMatchCall(user, function(msg, isLeave) {
             if (!isLeave) {
-                 socket.emit('calling', msg);
-                }
-            });  
-         
+                socket.emit('calling', msg);
+            }
+        });
+
     });
 
     socket.on('matching', function(msg) {
-    
+
         var target = findUserByUID(msg.to);
 
         console.log("Matching Calling --------------- to user:" + msg.to + "Socket id : ");
 
-            //emit for ios
+        //emit for ios
         if (target) {
 
             socket.broadcast.to(target.socketid).emit('matching', msg);
-             
+
         } else {
 
             socket.broadcast.emit("matching", msg);
 
-         }
-         
-         
+        }
+
+
     });
 
     // Roi vao disconnect
@@ -277,8 +278,8 @@ io.on('connection', function(socket) { // Incoming connections from clients
     });
 
     socket.on('chat message', function(msg) {
-         
-         //console.log("------------------------- MESSAGES -----------------------------------");
+
+        //console.log("------------------------- MESSAGES -----------------------------------");
         //console.log(msg);
         //console.log("----------------------------------------------------------------------");
         if (msg.subtype == 'close') {
