@@ -139,6 +139,8 @@ module.exports = class CallManager {
                         query = "INSERT INTO `calling` SET `users_key`=',`country_code` ='" + user.country_code + "',`gender` = '" + user.gender + "'" + user.key + "'";
                     }
 
+                    console.log("SQL: " + query);
+
                     client.query(query, function(err, d, f) {
 
                         var sqlUser = "SELECT * FROM `users` WHERE `key`='" + user.key + "'";
