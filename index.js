@@ -167,21 +167,17 @@ io.on('connection', function(socket) { // Incoming connections from clients
 
         callManager.socketEventMatching(user, function(msg, status) {
 
-                //emit for ios
-                if (target) {
+            //emit for ios
+            if (target) {
 
-                    socket.broadcast.to(target.socketid).emit('matching', msg);
+                socket.broadcast.to(target.socketid).emit('matching', msg);
 
-                } else {
+            } else {
 
-                    socket.broadcast.emit("matching", msg);
+                socket.broadcast.emit("matching", msg);
+            }
 
-
-                });
-
-
-        }
-
+        });
 
     });
 
