@@ -128,17 +128,17 @@ module.exports = class CallManager {
 
             console.log("request from calling " + user.key);
 
-            var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "'";
+            var sqlCheckExit = "SELECT * FROM `calling` WHERE `users_key`='" + user.key + "' AND `is_calling` = '0'";
             client.query(sqlCheckExit, function(e, d, f) {
                 if (e) {
                     console.log(e);
                 } else {
                     var query;
                     if (d.length > 0) {
-                        query = "UPDATE `calling` SET `is_calling`=0,`country_code` ='" + user.country_code + "',`gender` = '" + user.gender + "' WHERE `users_key`='" + user.key + "'";
+                        query = "UPDATE `calling` SET `is_calling`=0,`idChannel` ='" + user.key + "',`country_code` ='" + user.country_code + "',`gender` = '" + user.gender + "' WHERE `users_key`='" + user.key + "'";
 
                     } else {
-                        query = "INSERT INTO `calling` SET `users_key`='"+user.key+"',`country_code` ='" + user.country_code + "',`gender` = '" + user.gender + "'";
+                        query = "INSERT INTO `calling` SET `users_key`='"+user.key+"',`idChannel` ='" + user.key + "',`country_code` ='" + user.country_code + "',`gender` = '" + user.gender + "'";
                     }
 
                     console.log("SQL: " + query);
@@ -172,7 +172,7 @@ module.exports = class CallManager {
                                         } else {
                                             if (data.length > 0) {
                                                 var friendKey = data[0].key;
-                                                var sqlUpdate = "UPDATE `calling` SET `is_calling` = '1' WHERE `users_key` = '" + user.key + "' OR `users_key` = '" + friendKey + "'";
+                                                var sqlUpdate = "UPDATE `calling` SET `is_calling` = '1',`idChannel`='" + user.key + "' WHERE `users_key` = '" + user.key + "' OR `users_key` = '" + friendKey + "'";
                                                 client.query(sqlUpdate, function(err, result, field) {
 
                                                     let msg = { key: user.key, friend: data[0], result: 1, type: "result" };
