@@ -219,7 +219,7 @@ module.exports = class CallManager {
     /*Call signle with friend*/
     socketEventMatching(user, callback) {
 
-        if (user.type == 'close') {
+        if (user.subtype == 'close') {
             // let msg = {message:"user not found",result: 0, type: "result"};
             //  socket.emit('calling', msg);
 
