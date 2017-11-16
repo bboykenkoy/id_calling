@@ -189,7 +189,7 @@ module.exports = class CallManager {
                                     });
                                 } else {
 
-                                    let msg = { message: "user not found", result: 0, type: "result" };
+                                    let msg = {key: user.key, message: "user not found", result: 0, type: "result" };
                                     //socket.emit('calling', msg);
                                     console.log(msg);
                                     callback(msg, false);
