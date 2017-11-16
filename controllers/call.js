@@ -118,10 +118,12 @@ module.exports = class CallManager {
         if (user.type == 'leave') {
             // let msg = {message:"user not found",result: 0, type: "result"};
             //  socket.emit('calling', msg);
+      
             let msg = { key: user.key, message: "user leave", result: 0, type: "result" };
             client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
             console.log(msg);
             callback(msg, true);
+
         } else if (user && user.type == 'search') {
 
             console.log("request from calling " + user.key);
@@ -217,13 +219,21 @@ module.exports = class CallManager {
     /*Call signle with friend*/
     socketEventMatching(user, callback) {
 
-        if (user.type == 'leave') {
+        if (user.type == 'close') {
             // let msg = {message:"user not found",result: 0, type: "result"};
             //  socket.emit('calling', msg);
+
             let msg = { key: user.key, message: "user leave", result: 0, type: "result" };
-            client.query("DELETE FROM `calling` WHERE `users_key`='" + user.key + "'");
+            var condition = " WHERE `users_key` ='" + user.key + "'";
+            if (msg.from != "" && msg.to != "") {
+                condition = " WHERE `users_key` ='" + user.from + "' OR `users_key`='"+user.to+"'";
+            }
+
+
+            client.query("DELETE FROM `calling` "+condition);
             console.log(msg);
             callback(msg, true);
+
         } else if (user && user.type == 'connect') {
 
             console.log("request from calling " + user.key);
