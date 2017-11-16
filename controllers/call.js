@@ -231,7 +231,7 @@ module.exports = class CallManager {
 
 
             client.query("DELETE FROM `calling` "+condition);
-            console.log(msg);
+            console.log(condition);
             callback(msg, true);
 
         } else if (user && user.type == 'connect') {
