@@ -165,7 +165,7 @@ io.on('connection', function(socket) { // Incoming connections from clients
 
         console.log("Matching Calling --------------- to user:" + msg.to + "Socket id : ");
 
-        callManager.socketEventMatching(user, function(msg, status) {
+        callManager.socketEventMatching(msg, function(msg, status) {
 
             //emit for ios
             if (target) {
