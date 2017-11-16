@@ -136,7 +136,7 @@ module.exports = class CallManager {
                         query = "UPDATE `calling` SET `is_calling`=0,`country_code` ='" + user.country_code + "',`gender` = '" + user.gender + "' WHERE `users_key`='" + user.key + "'";
 
                     } else {
-                        query = "INSERT INTO `calling` SET `users_key`=',`country_code` ='" + user.country_code + "',`gender` = '" + user.gender + "'" + user.key + "'";
+                        query = "INSERT INTO `calling` SET `users_key`='"+user.users_key+"',`country_code` ='" + user.country_code + "',`gender` = '" + user.gender + "'";
                     }
 
                     console.log("SQL: " + query);
